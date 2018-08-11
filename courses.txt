@@ -3,10 +3,10 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="description" content="homepage of Saeedeh Sadeghi" />
-	<meta name="keywords" content="سعیده صادقی" />
+	<meta name="keywords" content="homepage, CV" />
 	<meta name="author" content="Saeedeh Sadeghi" />
 	<link rel="stylesheet" type="text/css" href="basic-profile.css" title="Basic Profile" media="all" />
-	<title>Saeedeh Sadeghi-Homepage</title>
+	<title>Saeedeh Sadeghi Homepage</title>
 </head>
 
 <body>
@@ -18,25 +18,22 @@
 		<!--<p class="slogan">everyone has a story to tell</p> -->
 		<ul>
 			<li><a href="index.html">About</a></li>
-			<li><a href="Education.html">Education</a></li>
-			<li><a href="courses.html">Courses</a></li>
-			<li><a href="projects.html">Projects & Activities</a></li>
-			<li><a href="Honors and Awards.html">Honours and Awards</a></li>
+			<li><a href="CV.html">CV</a></li>
+			<li><a href="coursework.html">Courses</a></li>
+			<li><a href="Projects.html">Projects</a></li>
 			<li><a href="contact.html">Contact</a></li>
 		</ul>
 	</div>
 
 	<div id="content">
-	<center><img src="images/god/god2.jpg" alt="In the name of Allah"  style="margin-top:-40px;" /></a></center>
+	<center><img src="images/god/god4.gif" alt="In the name of Allah"  style="margin-top:-40px;" /></a></center>
 		<h2>About</h2>
 
-	<p>My name is Saeedeh Sadeghi (سعیده صادقی). 
-		I am an M.S. graduate in Artificial Intelligence. My interests are applications of mathematical modelling and computer science in cognitive science and neuroscience.<br/> 
-		
-		
-		<!--I am interested in applications of mathematics and computer science in cognitive science and neuroscience. I'm especially fascinated by the neural correlates of some humane traits like consciousness, self-control and perception of free will. -->
-		<br/><br/>
-	<!--  <a href="Saeedeh_Sadeghi_CV.pdf">Download my CV here.</a> -->
+		<p><img src="images/saeedeh1.jpg" width="250" height="280" alt="Saeedeh Sadeghi" align="right"/>My name is Saeedeh Sadeghi (سعیده صادقی). I am a M.Sc. student in Artificial Intelligence at <a href="http://www.ut.ac.ir" target="_blank">University of Tehran</a>. 
+		I work under supervision of <a href="http://robotics.ut.ac.ir/People/MajidNili.aspx" target="_blank">Dr. Majid Nili Ahmadabadi</a> and 
+		<a href="http://www.icn.ucl.ac.uk/Research-Groups/awareness-group/group-members/MemberDetails.php?FirstName=Bahador&LastName=Bahrami" target="_blank">Dr. Bahador Bahrami</a>. 
+		My thesis is about <i>metacognitive ability in drug addicts</i>.
+		<br>
 		
 	</div>
 	<div id=footer>
@@ -47,4 +44,3 @@
 </div>
 </body>
 </html>
-
