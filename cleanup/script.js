@@ -35,7 +35,7 @@ socket.onmessage = function(event) {
 };
 
 // Initialize jsPsych with an empty timeline (we will dynamically add trials)
-jsPsych.init({
+initJsPsych({
     timeline: [],
     on_finish: function() {
         console.log("Experiment finished.");
