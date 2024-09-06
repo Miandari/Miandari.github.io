@@ -1,22 +1,16 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>My experiment</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Game</title>
     <script src="https://unpkg.com/jspsych@8.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
     <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body></body>
-  <script>
-    const jsPsych = initJsPsych();
+</head>
+<body>
+    <div id="jspsych-target"></div>
 
-    const hello_trial = {
-      type: jsPsychHtmlKeyboardResponse,
-      stimulus: 'Hello world!'
-    }
-
-    jsPsych.run([hello_trial]);
-  </script>
+    <script src="script.js"></script> <!-- The game logic goes here -->
+</body>
 </html>
-
-
