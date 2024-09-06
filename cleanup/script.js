@@ -1,5 +1,5 @@
 // Replace with your EC2 WebSocket server public IP
-const socket = new WebSocket("wss://clean-up-game.com/ws/");
+const socket = new WebSocket("wss://clean-up-game.com");
 
 socket.onopen = function() {
     console.log("Connected to WebSocket server.");
