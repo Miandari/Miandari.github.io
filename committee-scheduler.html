@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostafa's Committee Meeting Scheduler</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #239a23;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .scheduler-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .user-input {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .user-input h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .user-input input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 200px;
+        }
+        
+        .user-input button {
+            background: #239a23;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        
+        .user-input button:hover {
+            background: #1a7a1a;
+        }
+        
+        #currentUser {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #239a23;
+        }
+        
+        .legend {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 14px;
+        }
+        
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .schedule-table th {
+            background: #239a23;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .schedule-table th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background: #1a7a1a;
+            min-width: 120px;
+        }
+        
+        .schedule-table td:first-child {
+            background: #f0f0f0;
+            font-weight: bold;
+            position: sticky;
+            left: 0;
+            z-index: 9;
+            min-width: 120px;
+        }
+        
+        .time-slot {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            min-height: 35px;
+            position: relative;
+        }
+        
+        .time-slot:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        
+        .time-slot.selected {
+            border: 3px solid #239a23 !important;
+            font-weight: bold;
+        }
+        
+        /* Heatmap colors */
+        .heat-0 { background: #f0f0f0; }
+        .heat-1 { background: #c8e6c9; }
+        .heat-2 { background: #81c784; }
+        .heat-3 { background: #4caf50; }
+        .heat-4 { background: #2e7d32; color: white; }
+        
+        .export-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .export-btn {
+            background: #1976d2;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .export-btn:hover {
+            background: #1565c0;
+        }
+        
+        .user-list {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .user-list h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .user-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .delete-user {
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .success-message {
+            color: #388e3c;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mostafa's Committee Meeting Scheduler</h1>
+        <p class="subtitle">Select your available time slots for July 2025 (Weekdays: 8 AM - 7 PM)</p>
+        
+        <div class="scheduler-container">
+            <div class="user-input">
+                <h3>Enter Your Information</h3>
+                <div>
+                    <input type="text" id="userName" placeholder="Your Name" required>
+                    <input type="password" id="userPassword" placeholder="Password (optional)">
+                </div>
+                <div>
+                    <button onclick="loginUser()">Login / Create User</button>
+                    <button onclick="logoutUser()" id="logoutBtn" style="display:none;">Logout</button>
+                </div>
+                <div id="currentUser"></div>
+                <div id="message"></div>
+            </div>
+            
+            <div class="legend">
+                <strong>Availability:</strong>
+                <div class="legend-item"><div class="legend-color heat-0"></div><span>0 people</span></div>
+                <div class="legend-item"><div class="legend-color heat-1"></div><span>1 person</span></div>
+                <div class="legend-item"><div class="legend-color heat-2"></div><span>2 people</span></div>
+                <div class="legend-item"><div class="legend-color heat-3"></div><span>3 people</span></div>
+                <div class="legend-item"><div class="legend-color heat-4"></div><span>4 people</span></div>
+            </div>
+            
+            <div class="table-wrapper">
+                <div id="loadingMessage" class="loading">Loading schedule...</div>
+                <table class="schedule-table" id="scheduleTable" style="display:none;">
+                    <!-- Table will be generated by JavaScript -->
+                </table>
+            </div>
+            
+            <div class="export-section">
+                <button class="export-btn" onclick="exportToCSV()">Export to CSV</button>
+            </div>
+            
+            <div class="user-list">
+                <h3>Registered Users</h3>
+                <div id="userList">No users registered yet</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// Firebase configuration - REPLACE WITH YOUR OWN CONFIG
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    databaseURL: "YOUR_DATABASE_URL",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+let currentUser = null;
+let availabilityData = {};
+let isDragging = false;
+let dragStartValue = false;
+
+// Initialize data from Firebase
+function initializeData() {
+    // Listen for changes in availability data
+    database.ref('availability').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            availabilityData = data;
+        } else {
+            availabilityData = {};
+        }
+        updateHeatmap();
+        updateUserList();
+    });
+}
+
+// Save user data to Firebase
+function saveUserData(userName, userData) {
+    return database.ref(`availability/${userName}`).set(userData);
+}
+
+// Generate dates for July 2025 (weekdays only)
+function getJulyWeekdays() {
+    const dates = [];
+    const year = 2025;
+    const month = 6; // July (0-indexed)
+    
+    // Start from July 8, 2025
+    for (let day = 8; day <= 31; day++) {
+        const date = new Date(year, month, day);
+        const dayOfWeek = date.getDay();
+        
+        // Skip weekends (0 = Sunday, 6 = Saturday)
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+            dates.push(date);
+        }
+    }
+    
+    return dates;
+}
+
+// Generate time slots from 8 AM to 7 PM
+function getTimeSlots() {
+    const slots = [];
+    for (let hour = 8; hour <= 18; hour++) { // 8 AM to 6 PM (last slot is 6-7 PM)
+        const startHour = hour > 12 ? hour - 12 : hour;
+        const endHour = (hour + 1) > 12 ? (hour + 1) - 12 : (hour + 1);
+        const startPeriod = hour >= 12 ? 'PM' : 'AM';
+        const endPeriod = hour + 1 >= 12 ? 'PM' : 'AM';
+        const startLabel = hour === 12 ? '12' : startHour;
+        const endLabel = hour + 1 === 12 ? '12' : endHour;
+        slots.push(`${startLabel}:00 ${startPeriod} - ${endLabel}:00 ${endPeriod}`);
+    }
+    return slots;
+}
+
+// Create the schedule table
+function createScheduleTable() {
+    const table = document.getElementById('scheduleTable');
+    const dates = getJulyWeekdays();
+    const timeSlots = getTimeSlots();
+    
+    // Clear existing table
+    table.innerHTML = '';
+    
+    // Create header row
+    const headerRow = table.insertRow();
+    const timeHeader = headerRow.insertCell();
+    timeHeader.innerHTML = '<strong>Time</strong>';
+    
+    dates.forEach(date => {
+        const cell = headerRow.insertCell();
+        const dateStr = date.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+        cell.innerHTML = `<strong>${dateStr}</strong>`;
+    });
+    
+    // Create time slot rows
+    timeSlots.forEach((slot, slotIndex) => {
+        const row = table.insertRow();
+        const timeCell = row.insertCell();
+        timeCell.textContent = slot;
+        
+        dates.forEach((date, dateIndex) => {
+            const cell = row.insertCell();
+            cell.className = 'time-slot heat-0';
+            cell.dataset.date = dateIndex;
+            cell.dataset.time = slotIndex;
+            cell.onclick = () => toggleSlot(dateIndex, slotIndex);
+            cell.onmousedown = (e) => startDrag(e, dateIndex, slotIndex);
+            cell.onmouseenter = (e) => continueDrag(e, dateIndex, slotIndex);
+            cell.onmouseup = () => endDrag();
+        });
+    });
+    
+    // Hide loading message and show table
+    document.getElementById('loadingMessage').style.display = 'none';
+    table.style.display = 'table';
+    
+    // Prevent text selection during drag
+    table.addEventListener('selectstart', (e) => {
+        if (isDragging) e.preventDefault();
+    });
+    
+    document.addEventListener('mouseup', () => endDrag());
+}
+
+// Drag functionality
+function startDrag(e, dateIndex, slotIndex) {
+    if (!currentUser) return;
+    e.preventDefault();
+    isDragging = true;
+    const isSelected = isSlotSelected(dateIndex, slotIndex);
+    dragStartValue = !isSelected;
+    toggleSlot(dateIndex, slotIndex, dragStartValue);
+}
+
+function continueDrag(e, dateIndex, slotIndex) {
+    if (!isDragging || !currentUser) return;
+    e.preventDefault();
+    const isSelected = isSlotSelected(dateIndex, slotIndex);
+    if (isSelected !== dragStartValue) {
+        toggleSlot(dateIndex, slotIndex, dragStartValue);
+    }
+}
+
+function endDrag() {
+    isDragging = false;
+}
+
+// Check if a slot is selected by current user
+function isSlotSelected(dateIndex, slotIndex) {
+    const key = `${dateIndex}-${slotIndex}`;
+    return availabilityData[currentUser.name] && availabilityData[currentUser.name].slots && availabilityData[currentUser.name].slots[key];
+}
+
+// Toggle slot selection
+function toggleSlot(dateIndex, slotIndex, forceValue = null) {
+    if (!currentUser) {
+        showMessage('Please login first', 'error');
+        return;
+    }
+    
+    const key = `${dateIndex}-${slotIndex}`;
+    if (!availabilityData[currentUser.name]) {
+        availabilityData[currentUser.name] = { slots: {} };
+    }
+    if (!availabilityData[currentUser.name].slots) {
+        availabilityData[currentUser.name].slots = {};
+    }
+    
+    if (forceValue !== null) {
+        availabilityData[currentUser.name].slots[key] = forceValue;
+    } else {
+        availabilityData[currentUser.name].slots[key] = !availabilityData[currentUser.name].slots[key];
+    }
+    
+    // Save to Firebase
+    saveUserData(currentUser.name, availabilityData[currentUser.name]);
+}
+
+// Update heatmap colors
+function updateHeatmap() {
+    const dates = getJulyWeekdays();
+    const timeSlots = getTimeSlots();
+    
+    dates.forEach((date, dateIndex) => {
+        timeSlots.forEach((slot, slotIndex) => {
+            const key = `${dateIndex}-${slotIndex}`;
+            let count = 0;
+            
+            Object.keys(availabilityData).forEach(userName => {
+                if (availabilityData[userName].slots && availabilityData[userName].slots[key]) {
+                    count++;
+                }
+            });
+            
+            const cell = document.querySelector(`[data-date="${dateIndex}"][data-time="${slotIndex}"]`);
+            if (cell) {
+                // Remove all heat classes
+                cell.className = 'time-slot';
+                
+                // Add appropriate heat class (max 4)
+                const heatLevel = Math.min(count, 4);
+                cell.classList.add(`heat-${heatLevel}`);
+                
+                // If current user has selected this slot, highlight it
+                if (currentUser && availabilityData[currentUser.name] && 
+                    availabilityData[currentUser.name].slots && 
+                    availabilityData[currentUser.name].slots[key]) {
+                    cell.classList.add('selected');
+                }
+                
+                // Add tooltip
+                cell.title = `${count} ${count === 1 ? 'person' : 'people'} available`;
+            }
+        });
+    });
+}
+
+// User login/creation
+function loginUser() {
+    const name = document.getElementById('userName').value.trim();
+    const password = document.getElementById('userPassword').value;
+    
+    if (!name) {
+        showMessage('Please enter your name', 'error');
+        return;
+    }
+    
+    // Check if user exists in Firebase
+    database.ref(`availability/${name}`).once('value').then(snapshot => {
+        const userData = snapshot.val();
+        
+        if (userData) {
+            // User exists, check password if set
+            if (userData.password && userData.password !== password) {
+                showMessage('Incorrect password', 'error');
+                return;
+            }
+        } else {
+            // Create new user
+            const newUserData = {
+                password: password || null,
+                slots: {}
+            };
+            saveUserData(name, newUserData);
+        }
+        
+        currentUser = { name: name };
+        document.getElementById('currentUser').textContent = `Logged in as: ${name}`;
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        document.getElementById('userName').value = '';
+        document.getElementById('userPassword').value = '';
+        showMessage('Login successful!', 'success');
+        
+        updateHeatmap();
+    });
+}
+
+// Logout
+function logoutUser() {
+    currentUser = null;
+    document.getElementById('currentUser').textContent = '';
+    document.getElementById('logoutBtn').style.display = 'none';
+    showMessage('Logged out', 'success');
+    updateHeatmap();
+}
+
+// Update user list
+function updateUserList() {
+    const userListDiv = document.getElementById('userList');
+    const userNames = Object.keys(availabilityData);
+    
+    if (userNames.length === 0) {
+        userListDiv.innerHTML = 'No users registered yet';
+        return;
+    }
+    
+    userListDiv.innerHTML = '';
+    
+    userNames.forEach(userName => {
+        const userItem = document.createElement('div');
+        userItem.className = 'user-item';
+        userItem.innerHTML = `
+            <span>${userName}</span>
+            ${currentUser && currentUser.name === userName ? '<span class="delete-user" onclick="deleteUserData()">Delete my data</span>' : ''}
+        `;
+        userListDiv.appendChild(userItem);
+    });
+}
+
+// Delete user data
+function deleteUserData() {
+    if (!currentUser) return;
+    
+    if (confirm('Are you sure you want to delete all your availability data?')) {
+        database.ref(`availability/${currentUser.name}`).remove().then(() => {
+            logoutUser();
+            showMessage('Your data has been deleted', 'success');
+        });
+    }
+}
+
+// Export to CSV
+function exportToCSV() {
+    const dates = getJulyWeekdays();
+    const timeSlots = getTimeSlots();
+    let csv = 'Time,';
+    
+    // Header row with dates
+    dates.forEach(date => {
+        const dateStr = date.toLocaleDateString('en-US', { 
+            weekday: 'short', 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+        });
+        csv += `"${dateStr}",`;
+    });
+    csv = csv.slice(0, -1) + '\n';
+    
+    // Time slots with availability counts
+    timeSlots.forEach((slot, slotIndex) => {
+        csv += `"${slot}",`;
+        
+        dates.forEach((date, dateIndex) => {
+            const key = `${dateIndex}-${slotIndex}`;
+            let count = 0;
+            let names = [];
+            
+            Object.keys(availabilityData).forEach(userName => {
+                if (availabilityData[userName].slots && availabilityData[userName].slots[key]) {
+                    count++;
+                    names.push(userName);
+                }
+            });
+            
+            csv += `"${count} (${names.join('; ')})",`;
+        });
+        csv = csv.slice(0, -1) + '\n';
+    });
+    
+    // Add summary section
+    csv += '\n\nSummary by Person\n';
+    Object.keys(availabilityData).forEach(userName => {
+        csv += `"${userName}",`;
+        let totalSlots = 0;
+        if (availabilityData[userName].slots) {
+            totalSlots = Object.values(availabilityData[userName].slots).filter(v => v).length;
+        }
+        csv += `"${totalSlots} time slots selected"\n`;
+    });
+    
+    // Download CSV
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'committee_meeting_availability_july_2025.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// Show message
+function showMessage(text, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = text;
+    messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+    setTimeout(() => {
+        messageDiv.textContent = '';
+        messageDiv.className = '';
+    }, 3000);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    createScheduleTable();
+    initializeData();
+});
+</script>
+
+</body>
+</html>
