@@ -257,7 +257,7 @@
 <body>
     <div class="container">
         <h1>Mostafa's Committee Meeting Scheduler</h1>
-        <p class="subtitle">Select your available time slots for July 2025 (Weekdays: 8 AM - 7 PM)</p>
+        <p class="subtitle">Select your available time slots for February 2026 (Weekdays: 8 AM - 7 PM)</p>
         
         <div class="scheduler-container">
             <div class="user-input">
@@ -342,23 +342,23 @@ function saveUserData(userName, userData) {
     return database.ref(`availability/${userName}`).set(userData);
 }
 
-// Generate dates for July 2025 (weekdays only)
-function getJulyWeekdays() {
+// Generate dates for February 2026 (weekdays only)
+function getFebruaryWeekdays() {
     const dates = [];
-    const year = 2025;
-    const month = 6; // July (0-indexed)
-    
-    // Start from July 8, 2025
-    for (let day = 8; day <= 31; day++) {
+    const year = 2026;
+    const month = 1; // February (0-indexed)
+
+    // Start from February 10, 2026
+    for (let day = 10; day <= 28; day++) {
         const date = new Date(year, month, day);
         const dayOfWeek = date.getDay();
-        
+
         // Skip weekends (0 = Sunday, 6 = Saturday)
         if (dayOfWeek !== 0 && dayOfWeek !== 6) {
             dates.push(date);
         }
     }
-    
+
     return dates;
 }
 
@@ -380,7 +380,7 @@ function getTimeSlots() {
 // Create the schedule table
 function createScheduleTable() {
     const table = document.getElementById('scheduleTable');
-    const dates = getJulyWeekdays();
+    const dates = getFebruaryWeekdays();
     const timeSlots = getTimeSlots();
     
     // Clear existing table
@@ -393,12 +393,18 @@ function createScheduleTable() {
     
     dates.forEach(date => {
         const cell = headerRow.insertCell();
-        const dateStr = date.toLocaleDateString('en-US', { 
-            weekday: 'short', 
-            month: 'short', 
-            day: 'numeric' 
+        const dateStr = date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
         });
-        cell.innerHTML = `<strong>${dateStr}</strong>`;
+        // Check if this is Family Day (Feb 16)
+        const isFamilyDay = date.getMonth() === 1 && date.getDate() === 16;
+        if (isFamilyDay) {
+            cell.innerHTML = `<strong>${dateStr}</strong><br><span style="font-size:10px;color:#ff9800;">(Family Day)</span>`;
+        } else {
+            cell.innerHTML = `<strong>${dateStr}</strong>`;
+        }
     });
     
     // Create time slot rows
@@ -487,7 +493,7 @@ function toggleSlot(dateIndex, slotIndex, forceValue = null) {
 
 // Update heatmap colors
 function updateHeatmap() {
-    const dates = getJulyWeekdays();
+    const dates = getFebruaryWeekdays();
     const timeSlots = getTimeSlots();
     
     dates.forEach((date, dateIndex) => {
@@ -610,7 +616,7 @@ function deleteUserData() {
 
 // Export to CSV
 function exportToCSV() {
-    const dates = getJulyWeekdays();
+    const dates = getFebruaryWeekdays();
     const timeSlots = getTimeSlots();
     let csv = 'Time,';
     
@@ -664,7 +670,7 @@ function exportToCSV() {
     const a = document.createElement('a');
     a.setAttribute('hidden', '');
     a.setAttribute('href', url);
-    a.setAttribute('download', 'committee_meeting_availability_july_2025.csv');
+    a.setAttribute('download', 'committee_meeting_availability_february_2026.csv');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
