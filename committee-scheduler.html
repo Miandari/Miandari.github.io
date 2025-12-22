@@ -292,6 +292,7 @@
             
             <div class="export-section">
                 <button class="export-btn" onclick="exportToCSV()">Export to CSV</button>
+                <button class="export-btn" style="background:#d32f2f;margin-left:10px;" onclick="clearAllData()">Clear All Data</button>
             </div>
             
             <div class="user-list">
@@ -605,12 +606,29 @@ function updateUserList() {
 // Delete user data
 function deleteUserData() {
     if (!currentUser) return;
-    
+
     if (confirm('Are you sure you want to delete all your availability data?')) {
         database.ref(`availability/${currentUser.name}`).remove().then(() => {
             logoutUser();
             showMessage('Your data has been deleted', 'success');
         });
+    }
+}
+
+// Clear all data (admin function)
+function clearAllData() {
+    if (confirm('Are you sure you want to clear ALL availability data for everyone? This cannot be undone.')) {
+        if (confirm('FINAL WARNING: This will delete all responses. Type OK to confirm.')) {
+            database.ref('availability').remove().then(() => {
+                availabilityData = {};
+                if (currentUser) logoutUser();
+                showMessage('All data has been cleared', 'success');
+                updateHeatmap();
+                updateUserList();
+            }).catch(err => {
+                showMessage('Error clearing data: ' + err.message, 'error');
+            });
+        }
     }
 }
 
