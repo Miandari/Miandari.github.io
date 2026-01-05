@@ -418,7 +418,6 @@ function createScheduleTable() {
             cell.className = 'time-slot heat-0';
             cell.dataset.date = dateIndex;
             cell.dataset.time = slotIndex;
-            cell.onclick = () => toggleSlot(dateIndex, slotIndex);
             cell.onmousedown = (e) => startDrag(e, dateIndex, slotIndex);
             cell.onmouseenter = (e) => continueDrag(e, dateIndex, slotIndex);
             cell.onmouseup = () => endDrag();
