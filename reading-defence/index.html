@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostafa's Reading List Defence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           CSS Variables - Dark Scholarly Theme
+           ============================================ */
+        :root {
+            --bg-deep: #0f1419;
+            --bg-card: #1a2028;
+            --bg-elevated: #242d38;
+            --bg-hover: #2a343f;
+            --text-primary: #e8e6e3;
+            --text-secondary: #c4c1bc;
+            --text-muted: #8b9298;
+            --accent-gold: #d4a574;
+            --accent-teal: #5fb3a1;
+            --accent-coral: #e07a5f;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.12);
+
+            /* Cluster colors - sophisticated palette */
+            --cluster-1: #7c9eb2;  /* Steel blue - Affordances */
+            --cluster-2: #9b8aa6;  /* Muted purple - Architecture */
+            --cluster-3: #8fa87a;  /* Sage green - Algorithms */
+            --cluster-4: #d4a574;  /* Gold - Cross-Platform (Core) */
+            --cluster-5: #e07a5f;  /* Coral - Emotion */
+            --cluster-6: #6b9dad;  /* Teal - Misinformation */
+            --cluster-7: #b8856c;  /* Terracotta - Polarization */
+            --cluster-8: #a898b0;  /* Lavender - Self-Presentation */
+            --cluster-9: #7da589;  /* Mint - LLM Methods */
+            --cluster-additional: #8b9298; /* Gray - Additional */
+
+            /* Typography */
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-medium: 250ms ease;
+            --transition-slow: 400ms ease;
+        }
+
+        /* ============================================
+           Base Styles
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-deep);
+            min-height: 100vh;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.015;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 1000;
+        }
+
+        /* ============================================
+           Header
+           ============================================ */
+        .header {
+            padding: var(--space-2xl) var(--space-xl);
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-deep) 100%);
+        }
+
+        .header__title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin: 0 0 var(--space-sm);
+            color: var(--text-primary);
+        }
+
+        .header__subtitle {
+            font-family: var(--font-body);
+            font-size: 1.125rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            margin: 0 0 var(--space-lg);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-style: italic;
+        }
+
+        .header__proposal-link {
+            display: inline-block;
+            margin-bottom: var(--space-md);
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: color 0.2s ease;
+        }
+
+        .header__proposal-link:hover {
+            color: var(--accent-teal);
+        }
+
+        .header__stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .header__additional {
+            margin-top: var(--space-sm);
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat__value {
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--accent-gold);
+        }
+
+        .stat__label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           Controls Bar
+           ============================================ */
+        .controls {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-deep);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: var(--space-md) var(--space-xl);
+        }
+
+        .controls__inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-box__input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            padding-left: 2.5rem;
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            outline: none;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .search-box__input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box__input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
+        }
+
+        .search-box__icon {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .btn {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--accent-gold);
+            color: var(--text-primary);
+        }
+
+        .btn--active {
+            background: var(--accent-gold);
+            color: var(--bg-deep);
+            border-color: var(--accent-gold);
+        }
+
+        .btn--active:hover {
+            background: #c49664;
+            color: var(--bg-deep);
+        }
+
+        /* Cluster filter chips */
+        .cluster-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-top: var(--space-sm);
+            width: 100%;
+        }
+
+        .cluster-chip {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cluster-chip::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--chip-color);
+        }
+
+        .cluster-chip:hover,
+        .cluster-chip--active {
+            background: var(--bg-elevated);
+            border-color: var(--chip-color);
+            color: var(--text-primary);
+        }
+
+        .cluster-chip--active {
+            background: color-mix(in srgb, var(--chip-color) 15%, var(--bg-card));
+        }
+
+        /* ============================================
+           Main Content
+           ============================================ */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+        }
+
+        /* ============================================
+           Cluster Accordion
+           ============================================ */
+        .cluster {
+            margin-bottom: var(--space-md);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .cluster:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cluster--hidden {
+            display: none;
+        }
+
+        .cluster__header {
+            display: flex;
+            align-items: center;
+            padding: var(--space-lg);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            position: relative;
+        }
+
+        .cluster__header:hover {
+            background: var(--bg-elevated);
+        }
+
+        .cluster__color-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--cluster-color);
+        }
+
+        .cluster__icon {
+            width: 24px;
+            height: 24px;
+            margin-right: var(--space-md);
+            color: var(--text-muted);
+            transition: transform var(--transition-medium);
+            flex-shrink: 0;
+        }
+
+        .cluster--open .cluster__icon {
+            transform: rotate(90deg);
+        }
+
+        .cluster__info {
+            flex: 1;
+        }
+
+        .cluster__title {
+            font-family: var(--font-display);
+            font-size: 1.375rem;
+            font-weight: 600;
+            margin: 0 0 var(--space-xs);
+            color: var(--text-primary);
+        }
+
+        .cluster__number {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .cluster__description {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .cluster__count {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--cluster-color);
+            background: color-mix(in srgb, var(--cluster-color) 15%, var(--bg-deep));
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-left: var(--space-md);
+            flex-shrink: 0;
+        }
+
+        .cluster__content {
+            display: grid;
+            gap: var(--space-sm);
+            padding: 0 var(--space-lg) var(--space-lg);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height var(--transition-slow), opacity var(--transition-medium), padding var(--transition-medium);
+        }
+
+        .cluster--open .cluster__content {
+            max-height: 50000px;
+            opacity: 1;
+            padding: var(--space-sm) var(--space-lg) var(--space-lg);
+        }
+
+        /* Cluster Summary */
+        .cluster__summary {
+            background: color-mix(in srgb, var(--cluster-color) 8%, var(--bg-elevated));
+            border-left: 3px solid var(--cluster-color);
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-md);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .cluster__summary-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            cursor: pointer;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--cluster-color);
+            margin-bottom: var(--space-sm);
+        }
+
+        .cluster__summary-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform var(--transition-fast);
+        }
+
+        .cluster__summary--open .cluster__summary-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .cluster__summary-text {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height var(--transition-medium), opacity var(--transition-fast);
+        }
+
+        .cluster__summary--open .cluster__summary-text {
+            max-height: 1000px;
+            opacity: 1;
+            margin-top: var(--space-sm);
+        }
+
+        /* ============================================
+           Paper Card
+           ============================================ */
+        .paper {
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .paper--hidden {
+            display: none;
+        }
+
+        .paper:hover {
+            transform: translateX(4px);
+        }
+
+        .paper__header {
+            padding: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            cursor: pointer;
+        }
+
+        .paper__number {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 24px;
+        }
+
+        .paper__citation {
+            flex: 1;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        .paper__citation strong {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .paper__summary-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-gold);
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-right: var(--space-sm);
+            opacity: 0.7;
+        }
+
+        .paper__summary-btn:hover {
+            opacity: 1;
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .paper__summary-btn svg {
+            width: 12px;
+            height: 12px;
+            transition: transform var(--transition-fast);
+        }
+
+        .paper--open .paper__summary-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .paper--open .paper__summary-btn {
+            opacity: 1;
+            background: rgba(212, 165, 116, 0.15);
+        }
+
+
+        .paper__quick-actions {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+            margin-right: var(--space-sm);
+        }
+
+        .paper__icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .paper__icon-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+
+        .paper__icon-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .paper__icon-btn--disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .paper__details {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height var(--transition-medium), opacity var(--transition-fast), padding var(--transition-fast);
+        }
+
+        .paper--open .paper__details {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .paper__details-inner {
+            padding: 0 var(--space-md) var(--space-md);
+            padding-left: calc(var(--space-md) + 24px + var(--space-md));
+        }
+
+        .paper__relevance {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.7;
+        }
+
+        .paper__aims {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .aim-tag {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(95, 179, 161, 0.15);
+            color: var(--accent-teal);
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        a.aim-tag:hover {
+            background: rgba(95, 179, 161, 0.3);
+        }
+
+        .aim-tag--methodology {
+            background: rgba(212, 165, 116, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .aim-tag--foundational {
+            background: rgba(139, 146, 152, 0.15);
+            color: var(--text-secondary);
+        }
+
+
+
+        /* ============================================
+           No Results
+           ============================================ */
+        .no-results {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--text-muted);
+        }
+
+        .no-results__icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+            opacity: 0.5;
+        }
+
+        /* ============================================
+           Footer
+           ============================================ */
+        .footer {
+            text-align: center;
+            padding: var(--space-xl);
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 768px) {
+            .header {
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .header__stats {
+                gap: var(--space-lg);
+            }
+
+            .controls {
+                padding: var(--space-sm) var(--space-md);
+            }
+
+            .main {
+                padding: var(--space-md);
+            }
+
+            .cluster__header {
+                padding: var(--space-md);
+            }
+
+            .cluster__title {
+                font-size: 1.125rem;
+            }
+
+            .paper__details-inner {
+                padding-left: var(--space-md);
+            }
+        }
+
+        /* ============================================
+           Print Styles
+           ============================================ */
+        @media print {
+            :root {
+                --bg-deep: #ffffff;
+                --bg-card: #ffffff;
+                --bg-elevated: #f8f8f8;
+                --text-primary: #1a1a1a;
+                --text-secondary: #444444;
+                --text-muted: #666666;
+                --border-subtle: #e0e0e0;
+            }
+
+            body {
+                background: white;
+                color: black;
+                font-size: 11pt;
+            }
+
+            body::before {
+                display: none;
+            }
+
+            .controls {
+                display: none;
+            }
+
+            .header {
+                border-bottom: 2px solid #333;
+                padding: 1cm;
+            }
+
+            .header__title {
+                font-size: 24pt;
+                color: #1a1a1a;
+            }
+
+            .stat__value {
+                color: #333;
+            }
+
+            .cluster {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 0.5cm;
+                border: 1px solid #ccc;
+            }
+
+            .cluster__color-bar {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cluster__content {
+                max-height: none !important;
+                opacity: 1 !important;
+                padding: 0.5cm !important;
+            }
+
+            .cluster__summary {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cluster__summary-text {
+                max-height: none !important;
+                opacity: 1 !important;
+            }
+
+            .paper {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .paper__details {
+                max-height: none !important;
+                opacity: 1 !important;
+            }
+
+            .paper__actions {
+                display: none;
+            }
+
+            .paper__expand-icon,
+            .cluster__icon {
+                display: none;
+            }
+
+            .footer {
+                margin-top: 1cm;
+                border-top: 1px solid #ccc;
+            }
+        }
+
+        /* ============================================
+           Animations
+           ============================================ */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cluster {
+            animation: fadeIn 0.4s ease backwards;
+        }
+
+        .cluster:nth-child(1) { animation-delay: 0.05s; }
+        .cluster:nth-child(2) { animation-delay: 0.1s; }
+        .cluster:nth-child(3) { animation-delay: 0.15s; }
+        .cluster:nth-child(4) { animation-delay: 0.2s; }
+        .cluster:nth-child(5) { animation-delay: 0.25s; }
+        .cluster:nth-child(6) { animation-delay: 0.3s; }
+        .cluster:nth-child(7) { animation-delay: 0.35s; }
+        .cluster:nth-child(8) { animation-delay: 0.4s; }
+        .cluster:nth-child(9) { animation-delay: 0.45s; }
+        .cluster:nth-child(10) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">Mostafa's Reading List Defence</h1>
+        <p class="header__subtitle">Social media dynamics in emotion, information content and norm-responsiveness: Universal truths or platform-specific?</p>
+        <a href="https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.t4jmiihwa2u2" class="header__proposal-link" target="_blank" rel="noopener">View The Proposal &rarr;</a>
+        <div class="header__stats">
+            <div class="stat">
+                <span class="stat__value" id="total-papers">91</span>
+                <span class="stat__label">Papers</span>
+            </div>
+            <div class="stat">
+                <span class="stat__value">9</span>
+                <span class="stat__label">Clusters</span>
+            </div>
+            <div class="stat">
+                <span class="stat__value">4</span>
+                <span class="stat__label">Aims</span>
+            </div>
+        </div>
+        <p class="header__additional">+ 8 additional sources (books, reports & articles)</p>
+    </header>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="controls__inner">
+            <div class="search-box">
+                <svg class="search-box__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="search-box__input" id="search" placeholder="Search by author, keyword...">
+            </div>
+            <div class="button-group">
+                <button class="btn" id="expand-all">Expand All</button>
+                <button class="btn" id="collapse-all">Collapse All</button>
+            </div>
+            <div class="cluster-filters" id="cluster-filters">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main" id="clusters-container">
+        <!-- Generated by JS -->
+    </main>
+
+    <!-- No Results Message -->
+    <div class="no-results" id="no-results" style="display: none;">
+        <div class="no-results__icon">&#128269;</div>
+        <p>No papers match your search criteria</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Mostafa's Reading List Defence &bull; January 2025</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // Data
+        // ============================================
+        const clusters = [
+            {
+                id: 1,
+                name: "Affordances Theory & Conceptual Frameworks",
+                description: "Foundational theories explaining how platform features enable/constrain user behavior",
+                color: "var(--cluster-1)",
+                isCore: true,
+                summary: "Establishes what affordances are and how to operationalize them. Gibson's original ecological concept (see Additional References) was adapted to digital contexts through frameworks identifying key platform properties: Boyd's networked publics (persistence, replicability, scalability, searchability) and Treem and Leonardi's organizational affordances (visibility, editability, persistence, association). Later work expanded the concept to include imagined affordances shaped by user expectations (Nagy & Neff), cultural practices that constitute affordances-in-practice (Costa), emotional affordances (Steinert & Dennis), and value affordances capturing ethical and relational dimensions (Scharlach & Hallinan). Evans et al. and Ronzhyn et al. address conceptual issues around identification criteria and unified definitions. Majchrzak et al. demonstrate that affordances can have contradictory effects, both enabling and constraining behavior depending on context. Wang et al.'s platform-swinging framework shows how users navigate across platforms based on complementary affordances."
+            },
+            {
+                id: 2,
+                name: "Platform Architecture & Design",
+                description: "How platforms are structured and how design choices shape behavior",
+                color: "var(--cluster-2)",
+                isCore: true,
+                summary: "Examines how platforms are structured and how design choices shape user behavior. Gillespie's foundational work establishes that platforms are political actors, not neutral conduits, strategically positioning themselves through the very term 'platform.' van Dijck and Poell's social media logic (programmability, popularity, connectivity, datafication) and Bossetta's cross-platform comparison framework (network structure, functionality, algorithms, datafication) provide analytical tools for understanding platform architecture. Zuboff's surveillance capitalism offers broader political economy context. Empirical work shows how design promotes specific outcomes: Munn argues toxic communication emerges from design choices privileging engagement, and Zade et al. show how different features (replies vs. quotes) shape political discourse. Klug et al. demonstrate that users actively adapt to platform architecture through practices like algospeak."
+            },
+            {
+                id: 3,
+                name: "Algorithmic Amplification & Curation",
+                description: "How algorithms select, promote, and shape content visibility",
+                color: "var(--cluster-3)",
+                isCore: false,
+                summary: "How algorithms select, promote, and shape content visibility. Foundational work establishes key mechanisms: Muchnik et al. show social signals create herding effects, Ciampaglia et al. model how popularity bias affects quality rankings, and Lindström et al. demonstrate posting behavior follows reward learning principles. Large-scale experiments reveal mixed findings: Huszár et al. find Twitter's algorithm amplifies right-leaning content, while Guess et al.'s Facebook/Instagram experiments show algorithms change exposure but not attitudes, whether comparing algorithmic to chronological feeds or removing reshared content. Alfano et al. find evidence for YouTube recommendation drift toward extreme content. Brady et al. theorize that algorithms exploit evolved social-learning biases (PRIME), while Metzler and Garcia's review argues algorithms mostly reinforce existing social drivers. Recent work by Milli et al. shows engagement-based ranking amplifies content users do not actually prefer, and Taylor and Chen find algorithmic personalization can increase feelings of social connection."
+            },
+            {
+                id: 4,
+                name: "Cross-Platform Empirical Studies",
+                description: "Studies comparing user behavior or content across multiple platforms",
+                color: "var(--cluster-4)",
+                isCore: true,
+                summary: "Empirical studies directly comparing user behavior, content, or outcomes across multiple platforms. Early work established that the same users post different content on different platforms (Manikonda et al.). Waterloo et al. found platform-specific norms for emotional expression appropriateness, with positive emotions more acceptable across platforms but negative emotions most appropriate on WhatsApp. Masciantonio and colleagues extend this by showing people choose platforms based on emotion valence and arousal. Studies of political content show platform-specific participation structures (Theocharis et al.), different discourse patterns around the same topics (Borah et al., Suk et al.), and different responses to identical stimuli (Harmer & Southern). Bossetta and Schmøkel find cross-posting is common but engagement varies by platform. Oz et al. demonstrate that affordances like network structure and anonymity shape willingness to express opinions differently across platforms. Jaidka et al. show differential well-being effects, with Facebook predicting higher well-being and Instagram predicting lower. This cluster provides direct precedent for the cross-platform comparison methodology central to all three Aims."
+            },
+            {
+                id: 5,
+                name: "Emotion & Moral Contagion Online",
+                description: "How emotions spread and shape content diffusion",
+                color: "var(--cluster-5)",
+                isCore: true,
+                summary: "Research on emotional contagion and moral dynamics in online environments. Foundational work by Christakis and Fowler established that emotions spread through social networks up to three degrees of separation, while Fan et al. showed anger spreads faster and more broadly than joy on social media. Brady and colleagues developed the core framework for this area: their 2017 paper demonstrated that moral-emotional language increases retweet rates by 20% per word (bounded by group membership), the 2020 MAD model explains why such content spreads (motivation, attention, and platform design), and their 2021 work shows outrage is amplified through reinforcement and norm learning. Crockett's theoretical piece argues platforms fundamentally transform moral outrage by reducing expression costs while amplifying reach. Key debates have emerged: Rathje et al. found out-group language predicts engagement more strongly than moral-emotional content, while Burton et al. critiqued the statistical robustness of moral contagion findings. Wang and Inbar refined the framework by showing only negative (not positive) moral language drives diffusion. Cross-cultural work by Hsu et al. demonstrates that emotional expression norms vary across cultures, and Yu et al. show that similar emotions (e.g., anger vs. anxiety) can have opposite effects on virality. Watson et al. and Marino et al. connect these dynamics to broader patterns of negativity bias and polarization feedback loops. This cluster provides the theoretical and empirical foundation for Aim 1's focus on emotional expression and Aim 3's attention to norm-responsiveness."
+            },
+            {
+                id: 6,
+                name: "Misinformation & Information Quality",
+                description: "How false/misleading content spreads and interventions",
+                color: "var(--cluster-6)",
+                isCore: false,
+                summary: "This cluster covers research on misinformation spread and interventions. Foundational work by Vosoughi et al. showed false news spreads faster and farther than true news, though Juul and Ugander demonstrated that structural differences disappear when controlling for cascade size, suggesting true and false news differ primarily in infectiousness rather than diffusion mechanisms. Misinformation exposure and sharing are concentrated among specific demographics, particularly older and conservative users (Grinberg et al., Guess et al.). Psychological mechanisms include the illusory truth effect (Pennycook et al., 2018), reliance on emotion over reason (Martel et al.), and the cognitive ease of processing deceptive content (Carrasco-Farré). Various interventions show mixed results: accuracy prompts help (Pennycook et al., 2021), crowd-sourced fact-checking shows promise (Allen et al.), community notes are more trusted than simple labels (Drolsbach et al.), and psychological inoculation improves discernment (Roozenbeek et al.), but credibility labels have limited effects (Aslett et al., 2022) and online searches can paradoxically increase belief in misinformation (Aslett et al., 2024). Altay et al. provide a counterpoint showing that following news accounts can improve discernment. This cluster informs Aim 2's focus on information quality."
+            },
+            {
+                id: 7,
+                name: "Polarization & Political Communication",
+                description: "How platforms relate to political polarization and discourse",
+                color: "var(--cluster-7)",
+                isCore: false,
+                summary: "This cluster examines how platforms relate to political polarization and discourse. Early works focused on echo chambers and filter bubbles and how they drive polarization, but recent reviews find these are less prevalent than assumed; instead, pro-attitudinal media is the more consistent driver, and cross-cutting exposure can actually backfire. Evidence on YouTube radicalization is mixed: Ribeiro et al. find user migration pathways toward extreme content, while Hosseinmardi et al. find little evidence the algorithm drives this. Meanwhile, incivility among politicians on Twitter has risen 23% over a decade, reinforced by engagement feedback loops. Theoretical frameworks like SPIR help organize these dynamics around selection, platform design, incentives, and real-world context. Lorenz-Spreen et al.'s global synthesis finds digital media benefits emerging democracies but shows detrimental effects in established ones, while experiments on user agency suggest giving users control over toxic content improves satisfaction but may sensitize them to negativity."
+            },
+            {
+                id: 8,
+                name: "Self-Presentation & Social Comparison",
+                description: "Individual-level psychological processes shaping platform behavior",
+                color: "var(--cluster-8)",
+                isCore: false,
+                summary: "This cluster covers individual-level psychological processes shaping platform behavior. Toma and Hancock show users gravitate toward their profiles for self-affirmation after threats to self-worth, leveraging affordances like editability for positive self-presentation. Schlosser reviews how medium features differentially promote self-disclosure versus curated self-presentation, finding that asynchronicity and audience factors favor curation. Walther and Whitty's hyperpersonal model provides foundational CMC theory explaining how selective self-presentation, idealized perception, channel characteristics, and feedback loops can make online communication more intimate than face-to-face interaction. Burke et al. document social comparison processes on Facebook and discuss design interventions to reduce comparison effects. Recent ESM studies by Desjarlais and Vanherle and Beullens reveal subtle momentary effects: posting increases connectedness while upward comparison and browsing can reduce self-esteem and positive affect, with effects varying by motivation and content. This cluster informs how platform affordances shape self-presentation central to Aim 1 and Aim 3."
+            },
+            {
+                id: 9,
+                name: "LLM Methods for Social Media Analysis",
+                description: "Computational methods for analyzing social media at scale",
+                color: "var(--cluster-9)",
+                isCore: false,
+                summary: "This cluster covers computational methods for analyzing emotion, beliefs, and arguments in social media data at scale. Rathje et al. validate that LLMs can accurately detect sentiment, discrete emotions, and moral foundations across 12 languages, vastly outperforming dictionary methods. Peters and Matz demonstrate LLMs can infer personality traits from Facebook posts comparable to supervised ML models. For content analysis, Islam and Goldwasser propose an LLMs-in-the-Loop framework for extracting latent arguments without pre-defined categories, while Rahimzadeh et al. develop LLM-based user profiling from tweets. Lee et al. show how fine-tuned LLM embeddings can map belief structures and predict cognitive dissonance. These methods provide the analytical toolkit for examining emotional expression (Aim 1), information quality (Aim 2), and norm-responsiveness (Aim 3) across platforms."
+            },
+            {
+                id: 10,
+                name: "Additional References",
+                description: "Non-academic sources and industry reports",
+                color: "var(--cluster-additional)",
+                isCore: false,
+                summary: "Non-academic sources and industry reports that provide context, data, or influential public commentary relevant to the dissertation. These are not peer-reviewed empirical studies but offer useful background on platform dynamics and news consumption patterns."
+            }
+        ];
+
+        const papers = [
+            // CLUSTER 1: Affordances Theory & Conceptual Frameworks (11 papers)
+            {
+                id: 2,
+                clusterId: 1,
+                citation: "<strong>Boyd, D. (2010).</strong> Social Network Sites as Networked Publics: Affordances, Dynamics, and Implications.",
+                relevance: "Identifies four affordances of \"networked publics\": persistence (content is archived), replicability (content can be duplicated), scalability (potential for wide visibility), and searchability (content is findable) which create dynamics like invisible audiences and context collapse.",
+                aims: ["Aim 3"],
+                url: "https://www.danah.org/papers/2010/SNSasNetworkedPublics.pdf",
+                pdfFilename: "boyd_2010.pdf",
+                openAccess: true
+            },
+            {
+                id: 3,
+                clusterId: 1,
+                citation: "<strong>Treem, J. W., & Leonardi, P. M. (2012).</strong> Social Media Use in Organizations: Exploring the Affordances of Visibility, Editability, Persistence, and Association.",
+                relevance: "Identifies four key social media affordances (visibility, persistence, editability, and association) and theorizes how they influence organizational processes like socialization and knowledge sharing.",
+                aims: ["Aim 3"],
+                url: "https://ssrn.com/abstract=2129853",
+                pdfFilename: "treem_2012.pdf",
+                openAccess: false
+            },
+            {
+                id: 4,
+                clusterId: 1,
+                citation: "<strong>Majchrzak, A., et al. (2013).</strong> The Contradictory Influence of Social Media Affordances on Online Communal Knowledge Sharing.",
+                relevance: "Examines how the same social media affordances (metavoicing, triggered attending, network-informed associating, generative role-taking) can produce contradictory effects on online communal knowledge sharing, both enabling and constraining participation depending on context. Shows affordances are not deterministic and can have opposing outcomes.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1111/jcc4.12030",
+                pdfFilename: "majchrzak_2013.pdf",
+                openAccess: false
+            },
+            {
+                id: 5,
+                clusterId: 1,
+                citation: "<strong>Nagy, P., & Neff, G. (2015).</strong> Imagined Affordance: Explaining the Expectations That Shape User Experience.",
+                relevance: "Introduces \"imagined affordances\" - affordances that emerge from the interplay between users' perceptions/expectations, technology's materiality, and designers' intentions, emphasizing that affordances are not fixed but shaped by imagination and affect.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/2056305115603385",
+                pdfFilename: "nagy_2015.pdf",
+                openAccess: true
+            },
+            {
+                id: 6,
+                clusterId: 1,
+                citation: "<strong>Evans, S. K., et al. (2017).</strong> Explicating Affordances: A Conceptual Framework for Understanding Affordances in Communication Research.",
+                relevance: "Proposes criteria to determine what qualifies as an affordance in communication research: it cannot be a feature itself, cannot be an outcome itself, and must have variability across users/contexts.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1111/jcc4.12180",
+                pdfFilename: "evans_2017.pdf",
+                openAccess: false
+            },
+            {
+                id: 7,
+                clusterId: 1,
+                citation: "<strong>Bucher, T., & Helmond, A. (2018).</strong> The Affordances of Social Media Platforms.",
+                relevance: "Develops a platform-sensitive approach to affordances, arguing that affordances manifest in relations between platforms and multiple user types (end-users, developers, advertisers), not just individual users.",
+                aims: ["Foundational"],
+                url: "https://www.annehelmond.nl/wordpress/wp-content/uploads/2016/07/BucherHelmond_SocialMediaAffordances-preprint.pdf",
+                pdfFilename: "bucher_2018.pdf",
+                openAccess: true
+            },
+            {
+                id: 8,
+                clusterId: 1,
+                citation: "<strong>Costa, E. (2018).</strong> Affordances-in-Practice: An Ethnographic Critique of Social Media Logic and Context Collapse.",
+                relevance: "Uses ethnographic data from Turkey to argue that context collapse is not an inevitable consequence of platform architecture but depends on cultural practices; proposes \"affordances-in-practice\" to emphasize that affordances are culturally constituted through use.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/1461444818756290",
+                pdfFilename: "costa_2018.pdf",
+                openAccess: false
+            },
+            {
+                id: 9,
+                clusterId: 1,
+                citation: "<strong>Steinert, S., & Dennis, M. J. (2022).</strong> Emotions and Digital Well-Being: The Rationalist Bias in Social Media Research and Policy.",
+                relevance: "Introduces the concept of \"emotional affordances\" - how social media features facilitate specific emotional experiences. Connects this to digital well-being and ethical platform design.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1007/s13347-022-00530-6",
+                pdfFilename: "steinert_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 10,
+                clusterId: 1,
+                citation: "<strong>Ronzhyn, A., et al. (2023).</strong> Defining Affordances in Social Media Research: A Systematic Literature Review.",
+                relevance: "Systematic literature review finding conceptual blurriness in affordance research; proposes a unified definition: affordances are perceived/imagined properties emerging from technological, social, and contextual factors that enable and constrain platform use.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/14614448221135187",
+                pdfFilename: "ronzhyn_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 11,
+                clusterId: 1,
+                citation: "<strong>Scharlach, R., & Hallinan, B. (2023).</strong> The Value Affordances of Social Media Engagement Features.",
+                relevance: "Introduces \"value affordances\": ethical, aesthetic, and relational principles emerging from user-technology interaction; found that engagement features (Like, Comment, Share) on TikTok, Instagram, and YouTube promote expression/care/community but hinder privacy/mindfulness/safety.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1093/jcmc/zmad040",
+                pdfFilename: "scharlach_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 12,
+                clusterId: 1,
+                citation: "<strong>Wang, X., et al. (2024).</strong> Why Is One Social Media Platform Not Enough? A Typology of Platform-Swinging Behavior and Associated Affordance Preferences.",
+                relevance: "Identifies four types of platform-swinging behavior (social connecting, impression managing, information seeking, aimless swinging) and shows users treat platforms as complementary parts of a whole, switching between them to fulfill different gratifications shaped by different affordances. Supports cross-platform comparison approach.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.1177/20563051241254373",
+                pdfFilename: "wang_2024.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 2: Platform Architecture & Design (7 papers)
+            {
+                id: 13,
+                clusterId: 2,
+                citation: "<strong>Gillespie, T. (2010).</strong> The Politics of 'Platforms'.",
+                relevance: "Establishes that platforms are political actors, not neutral conduits, strategically positioning themselves through the very term 'platform.'",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/1461444809342738",
+                pdfFilename: "gillespie_2010.pdf",
+                openAccess: false
+            },
+            {
+                id: 14,
+                clusterId: 2,
+                citation: "<strong>van Dijck, J., & Poell, T. (2013).</strong> Understanding Social Media Logic.",
+                relevance: "Introduces \"social media logic\" as four principles shaping platform dynamics: programmability (how platforms steer users), popularity (metrics that rank content), connectivity (how users are linked), and datafication (turning social activity into data).",
+                aims: ["Foundational"],
+                url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2309065",
+                pdfFilename: "vandijck_2013.pdf",
+                openAccess: false
+            },
+            {
+                id: 15,
+                clusterId: 2,
+                citation: "<strong>Zuboff, S. (2015).</strong> Big Other: Surveillance Capitalism and the Prospects of an Information Civilization.",
+                relevance: "Introduces \"surveillance capitalism\" as a new logic of accumulation based on data extraction, behavioral prediction, and modification, with \"Big Other\" as the distributed power architecture that commodifies user behavior. Provides broader political economy context for platform design choices.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1057/jit.2015.5",
+                pdfFilename: "zuboff_2015.pdf",
+                openAccess: false
+            },
+            {
+                id: 16,
+                clusterId: 2,
+                citation: "<strong>Bossetta, M. (2018).</strong> The Digital Architectures of Social Media: Political Campaigning on Facebook, Twitter, Instagram, and Snapchat in the 2016 U.S. Election.",
+                relevance: "Introduces a framework for comparing platforms along four dimensions: network structure (searchability, connectivity, privacy), functionality, algorithmic filtering, and datafication. Applies it to Facebook, Twitter, Instagram, and Snapchat. Foundational work about comparing different social media platforms.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/1077699018763307",
+                pdfFilename: "bossetta_2018.pdf",
+                openAccess: true
+            },
+            {
+                id: 17,
+                clusterId: 2,
+                citation: "<strong>Munn, L. (2020).</strong> Angry by Design: Toxic Communication and Technical Architectures.",
+                relevance: "Argues that toxic communication is not just a byproduct of hateful users but a consequence of platform design. Shows how Facebook's Feed privileges incendiary content through engagement metrics and YouTube's recommendations can lead users toward extreme content.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1057/s41599-020-00550-7",
+                pdfFilename: "munn_2020.pdf",
+                openAccess: false
+            },
+            {
+                id: 18,
+                clusterId: 10,
+                citation: "<strong>Merrill, J. B., & Oremus, W. (2021).</strong> Five Points for Anger, One for a 'Like': How Facebook's Formula Fostered Rage and Misinformation.",
+                relevance: "Investigative reporting revealing that Facebook's algorithm weighted emoji reactions (including \"angry\") at 5x the value of \"likes\" from 2017 to 2020, despite internal data showing angry reactions correlated with misinformation and toxicity. (Washington Post article)",
+                aims: ["Aim 1"],
+                url: "https://www.washingtonpost.com/technology/2021/10/26/facebook-angry-emoji-algorithm/",
+                pdfFilename: "merrill_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 19,
+                clusterId: 2,
+                citation: "<strong>Klug, D., et al. (2023).</strong> How Algorithm Awareness Impacts Algospeak Use on TikTok.",
+                relevance: "Studies \"algospeak\" on TikTok (e.g., \"le$bean\" for \"lesbian\"), finding users intentionally alter language to evade algorithmic moderation and avoid shadowbanning, demonstrating how users actively adapt to and resist platform architecture.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1145/3543873.3587355",
+                pdfFilename: "klug_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 20,
+                clusterId: 2,
+                citation: "<strong>Zade, H., et al. (2024).</strong> To Reply or to Quote: Comparing Conversational Framing Strategies on Twitter.",
+                relevance: "Mixed-methods study comparing how Twitter's reply versus quote features shape conversations around polarized political content; found quotes are used more to broadcast while replies are used to reframe, with different framing strategies emerging when engaging with politically aligned versus opposed accounts. Provides methodology for analyzing platform-specific features.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1145/3625680",
+                pdfFilename: "zade_2024.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 3: Algorithmic Amplification & Curation (11 papers)
+            {
+                id: 21,
+                clusterId: 3,
+                citation: "<strong>Muchnik, L., et al. (2013).</strong> Social Influence Bias: A Randomized Experiment.",
+                relevance: "Randomized experiment on a news site showing that artificially positive first ratings increased subsequent positive ratings by 32% and final ratings by 25%, while negative manipulation was corrected by users. Demonstrates how social signals create herding effects.",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1126/science.1240466",
+                pdfFilename: "muchnik_2013.pdf",
+                openAccess: false
+            },
+            {
+                id: 22,
+                clusterId: 3,
+                citation: "<strong>Ciampaglia, G. L., et al. (2018).</strong> How Algorithmic Popularity Bias Hinders or Promotes Quality.",
+                relevance: "Models how popularity-based algorithms affect quality rankings; finds popularity bias mostly hinders quality, but there is a narrow regime where it can help high-quality content rise to the top, depending on the cognitive cost of user exploration.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1038/s41598-018-34203-2",
+                pdfFilename: "ciampaglia_2018.pdf",
+                openAccess: true
+            },
+            {
+                id: 23,
+                clusterId: 3,
+                citation: "<strong>Alfano, M., et al. (2021).</strong> Technologically Scaffolded Atypical Cognition: The Case of YouTube's Recommender System.",
+                relevance: "Pre-registered study using automated tools to follow YouTube recommendations; finds recommendation patterns consistent with leading users from mainstream content toward more extreme content over successive recommendations.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1007/s11229-020-02724-x",
+                pdfFilename: "alfano_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 24,
+                clusterId: 3,
+                citation: "<strong>Lindström, B., et al. (2021).</strong> A Computational Reward Learning Account of Social Media Engagement.",
+                relevance: "Applied reinforcement learning models to over 1 million posts from 4,000+ users; found social media posting behavior follows reward learning principles, with users spacing posts to maximize social rewards (likes). Identifies four distinct individual difference profiles in reward learning.",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1038/s41467-020-19607-x",
+                pdfFilename: "lindstrom_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 25,
+                clusterId: 3,
+                citation: "<strong>Huszár, F., et al. (2022).</strong> Algorithmic Amplification of Politics on Twitter.",
+                relevance: "Massive-scale Twitter experiment (58 million users since 2016) comparing algorithmic vs chronological feeds; found the algorithm amplifies right-leaning political content and news sources in 6 of 7 countries studied, but does not amplify far-left/far-right more than moderates. Provides evidence for platform-specific algorithmic effects.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.1073/pnas.2025334119",
+                pdfFilename: "huszar_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 26,
+                clusterId: 3,
+                citation: "<strong>Guess, A. M., et al. (2023a).</strong> How Do Social Media Feed Algorithms Affect Attitudes and Behavior in an Election Campaign?",
+                relevance: "Switched Facebook/Instagram users from algorithmic to chronological feeds during the 2020 US election; found this changed content exposure (more political content, less uncivil content) but did not change polarization or political attitudes.",
+                aims: ["Aim 2", "Aim 3"],
+                url: "https://doi.org/10.1126/science.abp9364",
+                pdfFilename: "guess_2023a.pdf",
+                openAccess: false
+            },
+            {
+                id: 27,
+                clusterId: 3,
+                citation: "<strong>Guess, A. M., et al. (2023b).</strong> Reshares on Social Media Amplify Political News but Do Not Detectably Affect Beliefs or Opinions.",
+                relevance: "Removed reshared content from Facebook feeds during the 2020 election; found reshares amplify political news exposure (including from untrustworthy sources), but removing them did not affect polarization or political attitudes. Shows amplification does not equal persuasion.",
+                aims: ["Aim 2", "Aim 3"],
+                url: "https://doi.org/10.1126/science.add8424",
+                pdfFilename: "guess_2023b.pdf",
+                openAccess: false
+            },
+            {
+                id: 28,
+                clusterId: 3,
+                citation: "<strong>Brady, W. J., et al. (2023).</strong> Algorithm-Mediated Social Learning in Online Social Networks.",
+                relevance: "Argues algorithms exploit evolved social-learning biases toward prestigious, ingroup, moral, and emotional information (PRIME) to maximize engagement, creating functional misalignment between adaptive social learning and platform goals. Proposes solutions including bounded diversification.",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1016/j.tics.2023.06.008",
+                pdfFilename: "brady_2023.pdf",
+                openAccess: false
+            },
+            {
+                id: 29,
+                clusterId: 3,
+                citation: "<strong>Metzler, H., & Garcia, D. (2024).</strong> Social Drivers and Algorithmic Mechanisms on Digital Media.",
+                relevance: "Review article arguing that algorithms mostly reinforce existing social drivers rather than independently causing outcomes like polarization or mental health harms; calls for more research disentangling algorithmic vs social contributions. Key review for understanding algorithm-social feedback loops.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/17456916231185057",
+                pdfFilename: "metzler_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 30,
+                clusterId: 3,
+                citation: "<strong>Taylor, S. H., & Chen, Y. A. (2024).</strong> The Lonely Algorithm Problem: Can Algorithmic Personalization Improve Feelings of Social Connection on TikTok?",
+                relevance: "Two survey studies testing whether TikTok's algorithmic personalization increases social connection; finds users feel more connected when the algorithm reflects their identity, mediated by perceived algorithm responsiveness (but not insensitivity).",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1093/jcmc/zmae017",
+                pdfFilename: "taylor_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 31,
+                clusterId: 3,
+                citation: "<strong>Milli, S., et al. (2025).</strong> Engagement, User Satisfaction, and the Amplification of Divisive Content on Social Media.",
+                relevance: "Preregistered audit comparing Twitter's engagement-based algorithm to reverse-chronological feed; finds the algorithm amplifies angry, out-group hostile content that users say makes them feel worse, and users do not actually prefer algorithmically-selected political tweets. Shows engagement does not equal satisfaction.",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1093/pnasnexus/pgaf062",
+                pdfFilename: "milli_2025.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 4: Cross-Platform Empirical Studies (12 papers)
+            {
+                id: 32,
+                clusterId: 10,
+                citation: "<strong>Hitlin, P., & Holcomb, J. (2015).</strong> From Twitter to Instagram, a Different #Ferguson Emerges.",
+                relevance: "Pew Research analysis comparing #Ferguson hashtag on Twitter vs Instagram; found Twitter focused on specific events and news, while Instagram used the hashtag more broadly to discuss race, police brutality, and politics. Early descriptive cross-platform comparison.",
+                aims: ["Foundational"],
+                url: "https://www.pewresearch.org/short-reads/2015/04/06/from-twitter-to-instagram-a-different-ferguson/",
+                pdfFilename: "hitlin_2015.pdf",
+                openAccess: true
+            },
+            {
+                id: 33,
+                clusterId: 4,
+                citation: "<strong>Manikonda, L., et al. (2016).</strong> Tweeting the Mind and Instagramming the Heart: Exploring Differentiated Content Sharing on Social Media.",
+                relevance: "Analyzed same users' posts on both Twitter and Instagram; found Instagram content focuses on personal topics (love, fashion, food) while Twitter focuses on news, sports, and business, with Instagram receiving higher engagement regardless of user activity level. Direct precedent for cross-platform content differences.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1609/icwsm.v10i1.14819",
+                pdfFilename: "manikonda_2016.pdf",
+                openAccess: true
+            },
+            {
+                id: 34,
+                clusterId: 4,
+                citation: "<strong>Waterloo, S. F., et al. (2018).</strong> Norms of Online Expressions of Emotion: Comparing Facebook, Twitter, Instagram, and WhatsApp.",
+                relevance: "Survey of 1,201 young Dutch users examining perceived appropriateness of expressing six emotions across four platforms; found positive emotions more appropriate than negative across all platforms, with WhatsApp most appropriate for negative emotions and Instagram least appropriate. Direct precedent for platform-specific emotional expression norms.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1177/1461444817707349",
+                pdfFilename: "waterloo_2018.pdf",
+                openAccess: false
+            },
+            {
+                id: 35,
+                clusterId: 4,
+                citation: "<strong>Jaidka, K., et al. (2022).</strong> Cross-Platform and Subgroup Differences in the Well-Being Effects of Twitter, Instagram, and Facebook in the United States.",
+                relevance: "Analyzed 11 years of representative US surveys linking social media use to well-being; found Facebook predicts higher well-being while Instagram predicts poorer well-being, with effects varying by race (younger communities of color experienced greatest harm from Instagram). Key paper for differential platform effects.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1038/s41598-022-07219-y",
+                pdfFilename: "jaidka_2022.pdf",
+                openAccess: false
+            },
+            {
+                id: 36,
+                clusterId: 4,
+                citation: "<strong>Theocharis, Y., et al. (2022).</strong> Platform Affordances and Political Participation: How Social Media Reshape Political Engagement.",
+                relevance: "Cross-national survey (US, UK, France) examining whether social media political participation fits traditional participation structures; found Twitter and Facebook political acts each form distinct factors separate from traditional categories, suggesting platform-specific participation shaped by affordances rather than just \"online versions\" of offline participation.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1080/01402382.2022.2087410",
+                pdfFilename: "theocharis_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 37,
+                clusterId: 4,
+                citation: "<strong>Borah, P., et al. (2023).</strong> Feminism Not for All? The Discourse Around White Feminism Across Five Social Media Platforms.",
+                relevance: "Analyzed discourse around white feminism across Twitter, Facebook, Instagram, Reddit, and YouTube using computational text analysis and content analysis; found platform-specific differences in how conversations about race, intersectionality, and LGBTQ+ experiences are framed. Shows same topic is discussed differently across platforms.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/20563051231186862",
+                pdfFilename: "borah_2023.pdf",
+                openAccess: false
+            },
+            {
+                id: 38,
+                clusterId: 4,
+                citation: "<strong>Bossetta, M., & Schmøkel, R. (2023).</strong> Cross-Platform Emotions and Audience Engagement in Social Media Political Campaigning: Comparing Candidates' Facebook and Instagram Images in the 2020 US Election.",
+                relevance: "Analyzed 4,977 images from eight political campaigns on Facebook and Instagram during the 2020 US election using computer vision and crowd coding; found high levels of cross-posting across platforms with happiness as the dominant emotion on both, but with platform-specific variations in engagement. Direct precedent for cross-platform emotional expression in campaigns.",
+                aims: ["Aim 1"],
+                url: "https://www.taylorfrancis.com/chapters/oa-edit/10.4324/9781003479598-8/cross-platform-emotions-audience-engagement-social-media-political-campaigning-comparing-candidates-facebook-instagram-images-2020-us-election-michael-bossetta-rasmus-schm%C3%B8kel",
+                pdfFilename: "bossetta_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 39,
+                clusterId: 4,
+                citation: "<strong>Suk, J., et al. (2023).</strong> When the Personal Becomes Political: Unpacking the Dynamics of Sexual Violence and Gender Justice Discourses Across Four Social Media Platforms.",
+                relevance: "Collected 3+ years of sexual violence and gender justice posts across Twitter, Facebook, Instagram, and Reddit; found personal narratives lead to calls to action and contentious debates on all platforms, but the dynamics differ. On Twitter, the flow is one-way (narratives spark action but not vice versa), while Reddit shows mutual reinforcement between discourse types, likely due to different affordances.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/00936502231154146",
+                pdfFilename: "suk_2023.pdf",
+                openAccess: false
+            },
+            {
+                id: 40,
+                clusterId: 4,
+                citation: "<strong>Masciantonio, A., & Bourguignon, D. (2024).</strong> Too Positive to Be Tweeted? Platform Choice and Emotional Expression on Social Media.",
+                relevance: "Experimental study examining which platform people choose to post emotional messages; found positive messages associated with Instagram, but negative messages depend on arousal level: low-arousal negative emotions (boredom) go to Instagram, while high-arousal negative emotions (anger, distress) go to Twitter. Direct precedent for platform-specific emotional expression.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1080/15213269.2023.2236935",
+                pdfFilename: "masciantonio_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 41,
+                clusterId: 4,
+                citation: "<strong>Ji, Q., et al. (2024).</strong> Cross-Platform Dissemination of Rational vs. Irrational Information: A Comparative Study of Weibo and Bilibili.",
+                relevance: "Modeled cross-platform information spread between Weibo and Bilibili; found irrational information dominates public opinion on both platforms, increasing rational information reduces irrational information but not vice versa, and information flow is asymmetric (Weibo influences Bilibili more than the reverse).",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1016/j.heliyon.2024.e28570",
+                pdfFilename: "ji_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 42,
+                clusterId: 4,
+                citation: "<strong>Oz, M., et al. (2024).</strong> Platform Affordances and the Spiral of Silence: How Network Structure and Anonymity Shape Opinion Expression on Social Media.",
+                relevance: "US nationally representative survey examining willingness to express opinions on systemic racism; found fear of social isolation affects self-censorship on Facebook but not Twitter, moderated by affordances (network association, anonymity, social presence). Facebook's friend-based ties increase self-censorship while Twitter's interest-based ties and perceived anonymity increase willingness to speak.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1016/j.techsoc.2023.102431",
+                pdfFilename: "oz_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 43,
+                clusterId: 4,
+                citation: "<strong>Harmer, E., & Southern, R. (2025).</strong> Twitter to Yell at Them, Facebook to Ask Questions and Instagram to Show Support? Exploring Platform Effects in Responses to Women Politicians On Social Media.",
+                relevance: "Analyzed responses to identical posts by 18 UK women politicians across Twitter, Facebook, and Instagram to isolate platform effects on incivility and abuse; found platform-specific response patterns (as the title suggests: Twitter for hostile responses, Facebook for questions, Instagram for support). Direct precedent for platform-specific responses to same stimuli.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1080/10584609.2025.2585498",
+                pdfFilename: "harmer_2025.pdf",
+                openAccess: false
+            },
+            {
+                id: 44,
+                clusterId: 4,
+                citation: "<strong>Masciantonio, A., et al. (2025).</strong> Unveiling the Positivity Bias on Social Media: A Registered Experimental Study on Facebook, Instagram, and X.",
+                relevance: "Registered experiment (n=312) comparing how people share personal events across Facebook, Instagram, and X; found participants perceive Instagram as more positive than X and Facebook, but contrary to pilot results, the main study found no significant differences in how events were actually reported across platforms.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1525/collabra.132410",
+                pdfFilename: "masciantonio_2025.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 5: Emotion & Moral Contagion Online (14 papers)
+            {
+                id: 45,
+                clusterId: 5,
+                citation: "<strong>Christakis, N. A., & Fowler, J. H. (2013).</strong> Social Contagion Theory: Examining Dynamic Social Networks and Human Behavior.",
+                relevance: "Reviews social contagion research using longitudinal network data (including Framingham Heart Study with 12,067 individuals over 32 years); proposes \"three degrees of influence\" property where behaviors and emotions spread through networks up to three degrees of separation. Foundational network contagion framework.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1002/sim.5408",
+                pdfFilename: "christakis_2013.pdf",
+                openAccess: false
+            },
+            {
+                id: 46,
+                clusterId: 5,
+                citation: "<strong>Fan, R., et al. (2014).</strong> Anger Is More Influential Than Joy: Sentiment Correlation in Weibo.",
+                relevance: "Analyzed ~70 million Weibo posts and found anger spreads faster and more broadly in social networks, with anger preferring weaker ties for dissemination while joy spreads through stronger ties. Foundational for emotion-platform interaction.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1371/journal.pone.0110184",
+                pdfFilename: "fan_2014.pdf",
+                openAccess: false
+            },
+            {
+                id: 47,
+                clusterId: 5,
+                citation: "<strong>Brady, W. J., et al. (2017).</strong> Emotion Shapes the Diffusion of Moralized Content in Social Networks.",
+                relevance: "Analyzed 563,312 tweets on gun control, same-sex marriage, and climate change; found each moral-emotional word in a message increased retweets by 20%, and this \"moral contagion\" was bounded by group membership (spreading more within liberal/conservative networks than between them). Key paper for moral-emotional language and diffusion.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1073/pnas.1618923114",
+                pdfFilename: "brady_2017.pdf",
+                openAccess: true
+            },
+            {
+                id: 48,
+                clusterId: 5,
+                citation: "<strong>Crockett, M. J. (2017).</strong> Moral Outrage in the Digital Age.",
+                relevance: "Theoretical piece arguing that digital media transforms moral outrage expression: online immoral acts evoke more outrage than those encountered in person, and platforms reduce the costs of expressing outrage while amplifying its reach, potentially leading to outrage escalation. Foundational work on why platforms amplify outrage.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1038/s41562-017-0213-3",
+                pdfFilename: "crockett_2017.pdf",
+                openAccess: false
+            },
+            {
+                id: 49,
+                clusterId: 5,
+                citation: "<strong>Brady, W. J., et al. (2020).</strong> The MAD Model of Moral Contagion: The Role of Motivation, Attention, and Design in the Spread of Moralized Content Online.",
+                relevance: "Proposes the MAD (Motivation, Attention, Design) model to explain why moral-emotional content spreads online: people have group-identity motivations to share such content, moral-emotional stimuli capture attention, and platform design amplifies these tendencies. Key framework integrating psychology with platform features.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/1745691620917336",
+                pdfFilename: "brady_2020.pdf",
+                openAccess: true
+            },
+            {
+                id: 50,
+                clusterId: 5,
+                citation: "<strong>Brady, W. J., et al. (2021).</strong> How Social Learning Amplifies Moral Outrage Expression in Online Social Networks.",
+                relevance: "Demonstrates that moral outrage on Twitter is amplified through reinforcement learning (engagement rewards) and norm learning (conforming to network norms), showing platforms shape outrage expression through feedback mechanisms.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1126/sciadv.abe5641",
+                pdfFilename: "brady_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 51,
+                clusterId: 5,
+                citation: "<strong>Burton, J. W., et al. (2021).</strong> Reconsidering the Evidence That Moral-Emotional Language Increases Retweets.",
+                relevance: "Critiques moral contagion research, arguing the effect may be a statistical artifact of noisy big data; found the moral contagion model performed no better than an implausible \"XYZ contagion\" model in out-of-sample prediction. Important critique that nuances moral contagion claims.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1038/s41562-021-01133-5",
+                pdfFilename: "burton_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 52,
+                clusterId: 5,
+                citation: "<strong>Hsu, T. W., et al. (2021).</strong> Social Media Users Produce More Affect That Supports Cultural Values, but Are More Influenced by Affect That Violates Cultural Values.",
+                relevance: "Compared Twitter posts in the US (55,867 tweets) and Japan (63,863 tweets); found users produce content consistent with cultural values (US: positive, Japan: low arousal), but are more influenced by content that violates their cultural values (\"affective hijacking\"). Shows cultural moderation of emotional expression norms online.",
+                aims: ["Foundational"],
+                url: "https://dx.doi.org/10.1037/pspa0000282",
+                pdfFilename: "hsu_2021.pdf",
+                openAccess: false
+            },
+            {
+                id: 53,
+                clusterId: 5,
+                citation: "<strong>Pröllochs, N., et al. (2021).</strong> Emotions Explain Differences in the Diffusion of True vs. False Social Media Rumors.",
+                relevance: "Analyzed 126,301 fact-checked rumor cascades (4.5 million retweets) on Twitter; found false rumors spread more when they contain positive sentiment and emotions like trust, anticipation, or anger, with positive false rumors reaching 61% more users than negative ones. Shows emotional content predicts spread of misinformation.",
+                aims: ["Aim 1", "Aim 2"],
+                url: "https://doi.org/10.1038/s41598-021-01813-2",
+                pdfFilename: "prollochs_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 54,
+                clusterId: 5,
+                citation: "<strong>Rathje, S., et al. (2021).</strong> Out-Group Animosity Drives Engagement on Social Media.",
+                relevance: "Analyzed 2.7 million posts from news media and US Congress members on Facebook and Twitter; found out-group language was the strongest predictor of engagement, about 4.8x stronger than negative affect and 6.7x stronger than moral-emotional language. Posts about the political out-group were shared twice as often as in-group posts. Key paper for understanding what drives engagement.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1073/pnas.2024292118",
+                pdfFilename: "rathje_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 55,
+                clusterId: 5,
+                citation: "<strong>Wang, S.-Y. N., & Inbar, Y. (2022).</strong> Moral-Emotional Language in Political Speech Predicts Greater Social Media Engagement.",
+                relevance: "Replicated and extended the moral contagion effect, finding that while moral rhetoric in tweets from political elites (presidential candidates and Members of Congress) does spread more, this effect is driven specifically by negative moral language rather than positive moral language; valence matters for diffusion.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1037/xge0001247",
+                pdfFilename: "wang_2022.pdf",
+                openAccess: false
+            },
+            {
+                id: 56,
+                clusterId: 5,
+                citation: "<strong>Marino, E. B., et al. (2024).</strong> The Polarization Loop: How Emotions Drive Propagation of Disinformation in Online Media—The Case of Conspiracy Theories and Extreme Right Movements in Southern Europe.",
+                relevance: "Proposes the \"polarization loop\" mechanism explaining how extreme messages trigger emotional reactions, which drive engagement and media amplification, creating a cyclical feedback process that reinforces societal polarization; illustrates with a case study of Great Replacement Theory narratives in Southern European far-right movements.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.3390/socsci13110603",
+                pdfFilename: "marino_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 57,
+                clusterId: 5,
+                citation: "<strong>Watson, J., et al. (2024).</strong> Negative Online News Articles Are Shared More to Social Media.",
+                relevance: "Analyzed 95,282 news articles and 579 million social media posts on Facebook and Twitter; found users are 1.91 times more likely to share negative news articles, with even stronger effects for negative content about political out-groups. Demonstrates negativity bias in sharing behavior.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1038/s41598-024-71263-z",
+                pdfFilename: "watson_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 58,
+                clusterId: 5,
+                citation: "<strong>Yu, Y., et al. (2025).</strong> Emotions in Online Content Diffusion.",
+                relevance: "Analyzed 387,486 articles and 6 million users on WeChat; found anxiety, love, and surprise increase virality, while anger, sadness, and joy reduce spread, demonstrating that similar emotions (e.g., anger vs anxiety, both negative) can have opposite effects on diffusion. Recent theoretical/empirical synthesis.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1287/isre.2022.0611",
+                pdfFilename: "yu_2025.pdf",
+                openAccess: false
+            },
+
+            // CLUSTER 6: Misinformation & Information Quality (14 papers)
+            {
+                id: 59,
+                clusterId: 6,
+                citation: "<strong>Pennycook, G., Cannon, T., & Rand, D. G. (2018).</strong> Prior Exposure Increases Perceived Accuracy of Fake News.",
+                relevance: "Demonstrated the \"illusory truth effect\" for fake news: even a single prior exposure to a fake news headline increases its perceived accuracy, and this effect persists even when stories are labeled as disputed by fact-checkers or contradict the reader's political ideology.",
+                aims: ["Aim 2"],
+                url: "https://psycnet.apa.org/doi/10.1037/xge0000465",
+                pdfFilename: "pennycook_2018.pdf",
+                openAccess: false
+            },
+            {
+                id: 60,
+                clusterId: 6,
+                citation: "<strong>Vosoughi, S., Roy, D., & Aral, S. (2018).</strong> The Spread of True and False News Online.",
+                relevance: "Analyzed approximately 126,000 verified true and false news stories on Twitter from 2006-2017, finding that false news diffused farther, faster, deeper, and more broadly than true news, with false stories inspiring fear, disgust, and surprise while true stories inspired anticipation, sadness, joy, and trust. Foundational work for Aim 2.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/science.aap9559",
+                pdfFilename: "vosoughi_2018.pdf",
+                openAccess: false
+            },
+            {
+                id: 61,
+                clusterId: 6,
+                citation: "<strong>Grinberg, N., et al. (2019).</strong> Fake News on Twitter During the 2016 U.S. Presidential Election.",
+                relevance: "Matched Twitter accounts to registered voters to examine fake news exposure and sharing during the 2016 U.S. election, finding that engagement was highly concentrated: 1% of users were exposed to 80% of fake news, and 0.1% of users shared 80% of it, with heavy engagement skewing toward older, conservative, and highly active users.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/science.aau2706",
+                pdfFilename: "grinberg_2019.pdf",
+                openAccess: false
+            },
+            {
+                id: 62,
+                clusterId: 6,
+                citation: "<strong>Guess, A., Nagler, J., & Tucker, J. (2019).</strong> Less Than You Think: Prevalence and Predictors of Fake News Dissemination on Facebook.",
+                relevance: "Linked survey data to Facebook sharing activity during the 2016 election, finding that fake news sharing was relatively rare overall but strongly predicted by age: users over 65 shared nearly seven times more fake news articles than the youngest age group, even after controlling for partisanship.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/sciadv.aau4586",
+                pdfFilename: "guess_2019.pdf",
+                openAccess: true
+            },
+            {
+                id: 63,
+                clusterId: 6,
+                citation: "<strong>Martel, C., Pennycook, G., & Rand, D. G. (2020).</strong> Reliance on Emotion Promotes Belief in Fake News.",
+                relevance: "Found across multiple studies that heightened emotionality and self-reported reliance on emotion were associated with greater belief in fake news but not real news, while inducing reliance on reason reduced susceptibility to misinformation. Bridges Aim 1 and Aim 2.",
+                aims: ["Aim 1", "Aim 2"],
+                url: "https://doi.org/10.1186/s41235-020-00252-3",
+                pdfFilename: "martel_2020.pdf",
+                openAccess: true
+            },
+            {
+                id: 64,
+                clusterId: 6,
+                citation: "<strong>Allen, J., et al. (2021).</strong> Scaling Up Fact-Checking Using the Wisdom of Crowds.",
+                relevance: "Demonstrated that small, politically balanced crowds of laypeople (10-15 people) rating article accuracy can achieve agreement with professional fact-checkers comparable to the agreement between fact-checkers themselves, suggesting a scalable approach to identifying misinformation at low cost.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/sciadv.abf4393",
+                pdfFilename: "allen_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 65,
+                clusterId: 6,
+                citation: "<strong>Juul, J. L., & Ugander, J. (2021).</strong> Comparing Information Diffusion Mechanisms by Matching on Cascade Size.",
+                relevance: "Demonstrated that when comparing diffusion cascades, it is essential to control for cascade size; applying this method to the Vosoughi et al. (2018) data, they found that structural differences between true and false news diffusion disappear when matching on cascade size, suggesting the mechanisms are similar and differ primarily in baseline infectiousness. Methodological contribution.",
+                aims: ["Aim 2", "Methodology"],
+                url: "https://doi.org/10.1073/pnas.2100786118",
+                pdfFilename: "juul_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 66,
+                clusterId: 6,
+                citation: "<strong>Pennycook, G., et al. (2021).</strong> Shifting Attention to Accuracy Can Reduce Misinformation Online.",
+                relevance: "Found that news accuracy has little effect on sharing intentions despite strongly affecting accuracy judgments, suggesting people often do not consider veracity when deciding to share; a simple accuracy prompt intervention significantly increased the quality of news people shared on Twitter.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1038/s41586-021-03344-2",
+                pdfFilename: "pennycook_2021.pdf",
+                openAccess: false
+            },
+            {
+                id: 67,
+                clusterId: 6,
+                citation: "<strong>Aslett, K., et al. (2022).</strong> News Credibility Labels Have Limited Average Effects on News Diet Quality and Fail to Reduce Misperceptions.",
+                relevance: "Conducted a field experiment embedding NewsGuard credibility labels in users' social feeds and search results, finding no detectable average effects on news diet quality or misperceptions after 3 weeks, though heavy misinformation consumers showed some improvement; suggests credibility labels alone are insufficient interventions.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/sciadv.abl3844",
+                pdfFilename: "aslett_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 68,
+                clusterId: 6,
+                citation: "<strong>Carrasco-Farré, C. (2022).</strong> The Fingerprints of Misinformation: How Deceptive Content Differs from Reliable Sources in Terms of Cognitive Effort and Appeal to Emotions.",
+                relevance: "Analyzed over 92,000 news articles comparing misinformation categories (clickbait, conspiracy, fake news, etc.) with factual news, finding that deceptive content is easier to process cognitively (simpler grammar, less lexical diversity) and more emotional (10 times more negative sentiment, 37% more appeals to morality). Bridges Aim 1 and Aim 2.",
+                aims: ["Aim 1", "Aim 2"],
+                url: "https://doi.org/10.1057/s41599-022-01174-9",
+                pdfFilename: "carrascofarre_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 69,
+                clusterId: 6,
+                citation: "<strong>Roozenbeek, J., et al. (2022).</strong> Psychological Inoculation Improves Resilience Against Misinformation on Social Media.",
+                relevance: "Tested psychological inoculation as a scalable intervention against misinformation, finding that short videos teaching people to recognize manipulation techniques (emotional language, false dichotomies, scapegoating, etc.) improved their ability to distinguish trustworthy from untrustworthy content and made better sharing decisions across seven preregistered studies including a YouTube field experiment.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1126/sciadv.abo6254",
+                pdfFilename: "roozenbeek_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 70,
+                clusterId: 6,
+                citation: "<strong>Aslett, K., et al. (2024).</strong> Online Searches to Evaluate Misinformation Can Increase Its Perceived Veracity.",
+                relevance: "Found across five experiments that prompting people to search online to evaluate false news articles actually increased the probability of believing them by 19%, because search engines often return corroborating low-quality sources in \"data voids,\" challenging the assumption that online research reduces misinformation belief.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1038/s41586-023-06883-y",
+                pdfFilename: "aslett_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 71,
+                clusterId: 6,
+                citation: "<strong>Drolsbach, C. P., Solovev, A., & Pröllochs, N. (2024).</strong> Community Notes Increase Trust in Fact-Checking on Social Media.",
+                relevance: "Presented approximately 1,810 Americans with social media posts and different fact-checking interventions, finding that community notes (which provide explanatory context) were rated as more trustworthy than simple warning labels, suggesting that contextual, community-based approaches to fact-checking may be more effective than binary misinformation flags.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1093/pnasnexus/pgae217",
+                pdfFilename: "drolsbach_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 72,
+                clusterId: 6,
+                citation: "<strong>Altay, S., et al. (2025).</strong> Following News on Social Media Boosts Knowledge, Belief Accuracy and Trust.",
+                relevance: "Conducted a preregistered two-wave field experiment (N=3,395) in France and Germany finding that following news accounts on Instagram and WhatsApp improved users' political knowledge, ability to discern true from false stories, and trust in news.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1038/s41562-025-02205-6",
+                pdfFilename: "altay_2025.pdf",
+                openAccess: false
+            },
+
+            // CLUSTER 7: Polarization & Political Communication (11 papers)
+            {
+                id: 74,
+                clusterId: 7,
+                citation: "<strong>Bail, C. A., et al. (2018).</strong> Exposure to Opposing Views on Social Media Can Increase Political Polarization.",
+                relevance: "Conducted a field experiment on Twitter where participants were paid to follow bots exposing them to opposing political views for one month; Republicans became substantially more conservative after exposure to liberal content, while Democrats showed slight (non-significant) increases in liberal attitudes, suggesting cross-cutting exposure can backfire. Provides context for platform effects on polarization.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1073/pnas.1804840115",
+                pdfFilename: "bail_2018.pdf",
+                openAccess: true
+            },
+            {
+                id: 75,
+                clusterId: 7,
+                citation: "<strong>Allcott, H., et al. (2020).</strong> The Welfare Effects of Social Media.",
+                relevance: "Randomized experiment paying 2,743 Facebook users to deactivate for four weeks before the 2018 midterm election; found deactivation reduced online activity, increased offline socializing and TV watching, reduced political polarization, and improved subjective well-being, with persistent reductions in Facebook use post-experiment. Causal evidence of platform well-being effects.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1257/aer.20190658",
+                pdfFilename: "allcott_2020.pdf",
+                openAccess: true
+            },
+            {
+                id: 76,
+                clusterId: 7,
+                citation: "<strong>Ribeiro, M. H., et al. (2020).</strong> Auditing Radicalization Pathways on YouTube.",
+                relevance: "Audited radicalization pathways on YouTube by analyzing 330,925 videos across 349 channels classified as Media, Alt-lite, Intellectual Dark Web, and Alt-right; found evidence that users migrate from milder to more extreme content over time, with Alt-lite and I.D.W. channels serving as gateways to Alt-right content. Methodological precedent for pathway analysis.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1145/3351095.3372879",
+                pdfFilename: "ribeiro_2020.pdf",
+                openAccess: true
+            },
+            {
+                id: 77,
+                clusterId: 7,
+                citation: "<strong>Ali, S., et al. (2021).</strong> Understanding the Effect of Deplatforming on Social Networks.",
+                relevance: "Studied users suspended from Twitter and Reddit who migrated to Gab, finding that while deplatformed users increased their activity and toxicity on the alternative platform, their potential audience decreased substantially, suggesting deplatforming reduces reach even if it does not eliminate harmful behavior. Provides context on platform moderation effects.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1145/3447535.3462637",
+                pdfFilename: "ali_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 78,
+                clusterId: 7,
+                citation: "<strong>Hosseinmardi, H., et al. (2021).</strong> Examining the Consumption of Radical Content on YouTube.",
+                relevance: "Analyzed browsing behavior of over 300,000 Americans on YouTube from 2016-2019, finding that news consumption is dominated by mainstream sources, far-right consumers represent a small and stable percentage, and there is little evidence the recommendation algorithm drives users toward radical content; suggests user preferences are consistent across platforms. Relates to platform effects on polarization.",
+                aims: ["Aim 2"],
+                url: "https://doi.org/10.1073/pnas.2101967118",
+                pdfFilename: "hosseinmardi_2021.pdf",
+                openAccess: true
+            },
+            {
+                id: 79,
+                clusterId: 7,
+                citation: "<strong>Kubin, E., & von Sikorski, C. (2021).</strong> The Role of (Social) Media in Political Polarization: A Systematic Review.",
+                relevance: "Systematically reviewed 94 articles (121 studies) on media and political polarization, finding that pro-attitudinal media consistently exacerbates both ideological and affective polarization, while evidence on counter-attitudinal exposure is mixed; notes a hyperfocus on Twitter and American samples in the literature. Provides systematic overview of the field.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1080/23808985.2021.1976070",
+                pdfFilename: "kubin_2021.pdf",
+                openAccess: false
+            },
+            {
+                id: 80,
+                clusterId: 7,
+                citation: "<strong>Ross Arguedas, A., et al. (2022).</strong> Echo Chambers, Filter Bubbles, and Polarisation: A Literature Review.",
+                relevance: "Literature review from the Reuters Institute finding that echo chambers are much less widespread than commonly assumed, no support for the filter bubble hypothesis, and a mixed picture on polarization; notes that like-minded exposure can polarize but so can cross-cutting exposure for partisans. Provides conceptual clarity on key terms.",
+                aims: ["Foundational"],
+                url: "https://reutersinstitute.politics.ox.ac.uk/echo-chambers-filter-bubbles-and-polarisation-literature-review",
+                pdfFilename: "rossarguedas_2022.pdf",
+                openAccess: true
+            },
+            {
+                id: 81,
+                clusterId: 7,
+                citation: "<strong>Frimer, J. A., et al. (2023).</strong> Incivility Is Rising Among American Politicians on Twitter.",
+                relevance: "Applied AI classification to all 1.3 million tweets by members of Congress from 2009-2019, finding a 23% increase in incivility over the decade; uncivil tweets received 15 times more retweets and 8 times more likes, and longitudinal analysis showed this engagement feedback reinforced further incivility. Demonstrates platform-specific political discourse dynamics.",
+                aims: ["Aim 1", "Aim 3"],
+                url: "https://doi.org/10.1177/19485506221083811",
+                pdfFilename: "frimer_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 82,
+                clusterId: 7,
+                citation: "<strong>Harris, E., Rathje, S., et al. (2023).</strong> The SPIR Framework of Social Media and Polarization: Exploring the Role of Selection, Platform Design, Incentives, and Real-World Context.",
+                relevance: "Proposes the SPIR framework examining how Selection, Platform Design, Incentives, and Real-world Context interact to explain social media's role in polarization; rather than asking if social media causes polarization, examines how these factors act as accelerants amplifying divisions in specific contexts. Provides integrative theoretical framework for platform-polarization relationship.",
+                aims: ["Foundational"],
+                url: "https://ijoc.org/index.php/ijoc/article/view/19014",
+                pdfFilename: "harris_2023.pdf",
+                openAccess: false
+            },
+            {
+                id: 83,
+                clusterId: 7,
+                citation: "<strong>Lorenz-Spreen, P., et al. (2023).</strong> A Systematic Review of Worldwide Causal and Correlational Evidence on Digital Media and Democracy.",
+                relevance: "Conducted a PRISMA systematic review of 496 empirical articles, coding study findings by political outcome, direction of effect, methodology, and country context; found that digital media shows beneficial effects in emerging democracies (increased participation) but detrimental associations in established democracies (polarization, populism, declining institutional trust). Key review synthesizing global evidence.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1038/s41562-022-01460-1",
+                pdfFilename: "lorenzspreen_2023.pdf",
+                openAccess: true
+            },
+            {
+                id: 84,
+                clusterId: 7,
+                citation: "<strong>Alqabandi, F., et al. (2024).</strong> Giving Users Control Over Toxic Content: The Effects of Choice on Political Content Evaluation.",
+                relevance: "Built a custom social media app to experimentally test whether giving users the choice to filter toxic political content affects their experience; found that most users chose to filter and reported higher platform satisfaction, but paradoxically rated identical content as more hostile than users without the choice. Examines user agency in platform effects.",
+                aims: ["Aim 1"],
+                url: "http://dx.doi.org/10.31235/osf.io/ubyac_v2",
+                pdfFilename: "alqabandi_2024.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 8: Self-Presentation & Social Comparison (6 papers)
+            {
+                id: 85,
+                clusterId: 8,
+                citation: "<strong>Toma, C. L., & Hancock, J. T. (2013).</strong> Self-Affirmation Underlies Facebook Use.",
+                relevance: "Two studies showing that Facebook profiles serve a self-affirmation function: users gravitate toward their profiles after threats to self-worth, using them to repair self-perceptions; platform affordances like editability and asynchronicity enable positive self-presentation. Explains motivations for platform use.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/0146167212474694",
+                pdfFilename: "toma_2013.pdf",
+                openAccess: false
+            },
+            {
+                id: 86,
+                clusterId: 8,
+                citation: "<strong>Burke, M., Cheng, J., & de Gant, B. (2020).</strong> Social Comparison and Facebook: Feedback, Positivity, and Opportunities for Comparison.",
+                relevance: "Found that people who engage in more social comparison spent more time on Facebook, had more friends, and saw more social content; discusses design interventions like hiding feedback counts and filtering to reduce comparison effects when meaningful interactions do occur. Platform-specific comparison processes.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1145/3313831.3376482",
+                pdfFilename: "burke_2020.pdf",
+                openAccess: true
+            },
+            {
+                id: 87,
+                clusterId: 8,
+                citation: "<strong>Schlosser, A. E. (2020).</strong> Self-Disclosure Versus Self-Presentation on Social Media.",
+                relevance: "Reviews how five features of online communication (anonymity, reduced information richness, asynchronicity, multiple audiences, audience feedback) differentially promote self-disclosure versus self-presentation; finds that while anonymity may encourage true self-disclosure, asynchronicity and audience factors favor curated self-presentation. Explains why users present differently across platforms.",
+                aims: ["Aim 3"],
+                url: "https://doi.org/10.1016/j.copsyc.2019.06.025",
+                pdfFilename: "schlosser_2020.pdf",
+                openAccess: false
+            },
+            {
+                id: 88,
+                clusterId: 8,
+                citation: "<strong>Walther, J. B., & Whitty, M. T. (2021).</strong> Language, Psychology, and New New Media: The Hyperpersonal Model of Mediated Communication at Twenty-Five Years.",
+                relevance: "Reviews the hyperpersonal model after 25 years, which explains why online communication can become more intimate than face-to-face interaction: senders can selectively present only desirable aspects of themselves (editing out flaws), receivers fill in gaps by idealizing the sender based on limited cues, and asynchronous channels allow careful message composition. These dynamics create feedback loops that can intensify impressions beyond what occurs offline. Foundational CMC theory explaining how platform features shape self-presentation.",
+                aims: ["Foundational"],
+                url: "https://doi.org/10.1177/0261927X20967703",
+                pdfFilename: "walther_2021.pdf",
+                openAccess: false
+            },
+            {
+                id: 89,
+                clusterId: 8,
+                citation: "<strong>Desjarlais, M. (2024).</strong> Subtle Momentary Effects of Social Media Experiences: An Experience Sampling Study of Posting and Social Comparisons on Connectedness and Self-Esteem.",
+                relevance: "Experience sampling study with 74 adults reporting six times daily for five days on social media use and well-being; found posting was associated with momentary increases in connectedness, while upward social comparison was associated with momentary decreases in self-esteem, highlighting subtle within-person effects of specific social media experiences. ESM evidence of platform effects.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1093/jcmc/zmae004",
+                pdfFilename: "desjarlais_2024.pdf",
+                openAccess: false
+            },
+            {
+                id: 90,
+                clusterId: 8,
+                citation: "<strong>Vanherle, R., & Beullens, K. (2025).</strong> The Link Between Social Media Browsing and Emerging Adults' Momentary Affective Well-Being: Unraveling Levels of Analysis, Underlying Reasons, and Content Valence.",
+                relevance: "ESM study with 108 emerging adults examining social media browsing and affective well-being; found no significant between-person associations but a small average within-person effect where browsing slightly reduced positive affect; effects varied by underlying reasons (social monitoring vs. escapism) and content valence. Recent ESM evidence.",
+                aims: ["Aim 1"],
+                url: "https://doi.org/10.1093/jcmc/zmaf015",
+                pdfFilename: "vanherle_2025.pdf",
+                openAccess: false
+            },
+
+            // CLUSTER 9: LLM Methods for Social Media Analysis (5 papers)
+            {
+                id: 91,
+                clusterId: 9,
+                citation: "<strong>Islam, M. R., & Goldwasser, D. (2024).</strong> LLMs-in-the-Loop: Uncovering Latent Arguments in Social Media Messaging.",
+                relevance: "Proposes an LLMs-in-the-Loop framework for uncovering latent arguments in social media messaging; combines embedding-based clustering with iterative LLM inference to extract domain-specific argument taxonomies from large corpora without pre-defined categories; validated on climate and COVID-19 vaccine campaign datasets. Methodological framework for argument/claim extraction from social media.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.18653/v1/2025.findings-naacl.413",
+                pdfFilename: "islam_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 92,
+                clusterId: 9,
+                citation: "<strong>Peters, H., & Matz, S. C. (2024).</strong> Large Language Models Can Infer Psychological Dispositions of Social Media Users.",
+                relevance: "Tested whether GPT-3.5 and GPT-4 can infer Big Five personality traits from Facebook posts in zero-shot learning; found average correlations of r = .29 with self-reported traits, comparable to supervised ML models, though accuracy varied by age and gender. Validates LLM-based psychological inference from social media text.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.1093/pnasnexus/pgae231",
+                pdfFilename: "peters_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 93,
+                clusterId: 9,
+                citation: "<strong>Rathje, S., et al. (2024).</strong> GPT Is an Effective Tool for Multilingual Psychological Text Analysis.",
+                relevance: "Tested GPT-3.5, GPT-4, and GPT-4 Turbo on 15 datasets (n = 47,912 texts) across 12 languages for detecting sentiment, discrete emotions, offensiveness, and moral foundations; found GPT (r = .59-.77) vastly outperformed dictionary methods (r = .20-.30) and matched or exceeded fine-tuned ML models at predicting human annotator judgments. Validates LLM-based emotion detection for social media research.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.1073/pnas.2308950121",
+                pdfFilename: "rathje_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 94,
+                clusterId: 9,
+                citation: "<strong>Lee, B., et al. (2025).</strong> A Semantic Embedding Space for Mapping Human Beliefs About the World.",
+                relevance: "Fine-tuned LLMs on online debate data to create a \"belief embedding space\" that captures relationships between thousands of beliefs; positions in this space predicted individuals' new beliefs and estimated cognitive dissonance from distances between existing and new beliefs. Demonstrates LLM embeddings for belief analysis.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.1038/s41562-025-02228-z",
+                pdfFilename: "lee_2025.pdf",
+                openAccess: false
+            },
+            {
+                id: 95,
+                clusterId: 9,
+                citation: "<strong>Rahimzadeh, V., et al. (2025).</strong> From Millions of Tweets to Actionable Insights: LLM-Based User Profiling from Social Media.",
+                relevance: "Proposes an LLM-based approach to user profiling from tweets using domain-defining statements; applies semi-supervised filtering with a knowledge base then generates abstractive and extractive user profiles; outperformed baselines on political stance detection from over six million tweets. LLM-based user profiling methodology.",
+                aims: ["Methodology"],
+                url: "https://doi.org/10.48550/arXiv.2505.06184",
+                pdfFilename: "rahimzadeh_2025.pdf",
+                openAccess: true
+            },
+
+            // CLUSTER 10: Additional References (8 sources)
+            {
+                id: 96,
+                clusterId: 10,
+                citation: "<strong>Gibson, J. J. (1979).</strong> The Ecological Approach to Visual Perception.",
+                relevance: "Introduces the concept of affordances: properties of the environment relative to an actor that specify possibilities for action (e.g., a surface affords sitting if it's flat, rigid, and knee-high relative to the perceiver). Foundational work.",
+                aims: ["Foundational"],
+                url: "https://www.routledge.com/The-Ecological-Approach-to-Visual-Perception/Gibson/p/book/9781848725782",
+                pdfFilename: "gibson_1979.pdf",
+                openAccess: false
+            },
+            {
+                id: 97,
+                clusterId: 10,
+                citation: "<strong>Pew Research Center. (2017).</strong> Partisan Conflict and Congressional Outreach.",
+                relevance: "Analyzed over 200,000 press releases and Facebook posts from members of the 114th Congress, finding that while aggressive partisan disagreement was relatively rare overall (around 10% of communications), it was more common among congressional leaders, those with partisan voting records, and those from solidly partisan districts. Provides baseline political context.",
+                aims: ["Foundational"],
+                url: "https://www.pewresearch.org/politics/2017/02/23/partisan-conflict-and-congressional-outreach/",
+                pdfFilename: "pew_2017.pdf",
+                openAccess: true
+            },
+            {
+                id: 97,
+                clusterId: 10,
+                citation: "<strong>Tufekci, Z. (2018).</strong> YouTube, the Great Radicalizer. <em>New York Times</em>.",
+                relevance: "New York Times opinion piece arguing that YouTube's recommendation system systematically promotes extreme content because it maximizes engagement. Influential public commentary that shaped discourse on algorithmic amplification.",
+                aims: ["Aim 2"],
+                url: "https://www.nytimes.com/2018/03/10/opinion/sunday/youtube-politics-radical.html",
+                pdfFilename: "tufekci_2018.pdf",
+                openAccess: true
+            },
+            {
+                id: 97,
+                clusterId: 10,
+                citation: "<strong>Rose-Stockwell, T. (2023).</strong> Outrage Machine: How Tech Amplifies Discontent and Disrupts Democracy. Hachette.",
+                relevance: "Book analyzing how platform design choices around algorithmic amplification shape the information environment users encounter.",
+                aims: ["Aim 2", "Aim 3"],
+                url: "https://www.hachettebookgroup.com/titles/tobias-rose-stockwell/outrage-machine/9780306923326/",
+                pdfFilename: "rosestockwell_2023.pdf",
+                openAccess: false
+            },
+            {
+                id: 98,
+                clusterId: 10,
+                citation: "<strong>Pew Research Center. (2024).</strong> Social Media and News Fact Sheet 2024.",
+                relevance: "Industry report presenting survey data on Americans' social media news consumption habits across platforms. Offers demographic breakdowns of platform-specific news use relevant to contextualizing all three Aims.",
+                aims: ["Aim 1", "Aim 2", "Aim 3"],
+                url: "https://www.pewresearch.org/journalism/fact-sheet/social-media-and-news-fact-sheet/",
+                pdfFilename: "pew_2024.pdf",
+                openAccess: true
+            },
+            {
+                id: 99,
+                clusterId: 10,
+                citation: "<strong>Newman, N., et al. (2025).</strong> Reuters Institute Digital News Report 2025.",
+                relevance: "Industry survey providing cross-national data on how people access and engage with news across platforms. Offers baseline statistics on platform-specific news behaviors relevant to contextualizing the cross-platform approach.",
+                aims: ["Aim 1", "Aim 2", "Aim 3"],
+                url: "https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2025",
+                pdfFilename: "newman_2025.pdf",
+                openAccess: true
+            }
+        ];
+
+        // ============================================
+        // State
+        // ============================================
+        let openClusters = new Set();
+        let openPapers = new Set();
+        let openSummaries = new Set();
+        let activeFilters = new Set();
+        let searchQuery = '';
+
+        // ============================================
+        // DOM Elements
+        // ============================================
+        const clustersContainer = document.getElementById('clusters-container');
+        const clusterFiltersContainer = document.getElementById('cluster-filters');
+        const searchInput = document.getElementById('search');
+        const expandAllBtn = document.getElementById('expand-all');
+        const collapseAllBtn = document.getElementById('collapse-all');
+        const noResults = document.getElementById('no-results');
+        const totalPapersEl = document.getElementById('total-papers');
+
+        // ============================================
+        // Render Functions
+        // ============================================
+        function renderClusterFilters() {
+            clusterFiltersContainer.innerHTML = clusters.map(cluster => `
+                <button
+                    class="cluster-chip ${activeFilters.has(cluster.id) ? 'cluster-chip--active' : ''}"
+                    data-cluster-id="${cluster.id}"
+                    style="--chip-color: ${cluster.color};"
+                >
+                    ${cluster.name.split(' ')[0]}
+                </button>
+            `).join('');
+
+            // Add event listeners
+            clusterFiltersContainer.querySelectorAll('.cluster-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const clusterId = parseInt(chip.dataset.clusterId);
+                    if (activeFilters.has(clusterId)) {
+                        activeFilters.delete(clusterId);
+                    } else {
+                        activeFilters.add(clusterId);
+                    }
+                    render();
+                });
+            });
+        }
+
+        const aimUrls = {
+            'Aim 1': 'https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.8yxy43t5nxli',
+            'Aim 2': 'https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.xwwlv2yac9y7',
+            'Aim 3': 'https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.h1if2eg9yzyy'
+        };
+
+        function getAimClass(aim) {
+            if (aim === 'Methodology') return 'aim-tag--methodology';
+            if (aim === 'Foundational') return 'aim-tag--foundational';
+            return '';
+        }
+
+        function renderAimTag(aim) {
+            const cls = `aim-tag ${getAimClass(aim)}`;
+            if (aimUrls[aim]) {
+                return `<a href="${aimUrls[aim]}" class="${cls}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${aim}</a>`;
+            }
+            return `<span class="${cls}">${aim}</span>`;
+        }
+
+        function renderPaper(paper, index) {
+            const isOpen = openPapers.has(paper.id);
+            return `
+                <div class="paper ${isOpen ? 'paper--open' : ''}" data-paper-id="${paper.id}">
+                    <div class="paper__header">
+                        <span class="paper__number">${index + 1}</span>
+                        <span class="paper__citation">${paper.citation}</span>
+                        <button class="paper__summary-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                            Summary
+                        </button>
+                        <div class="paper__quick-actions">
+                            ${paper.url ? `
+                                <a href="${paper.url}" target="_blank" rel="noopener" class="paper__icon-btn" title="View Online" onclick="event.stopPropagation()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            ` : '<span class="paper__icon-btn paper__icon-btn--disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></span>'}
+                            ${paper.clusterId !== 10 ? `<a href="pdfs/cluster${paper.clusterId}/${paper.pdfFilename}" class="paper__icon-btn" title="Download PDF" onclick="downloadPdf('${paper.pdfFilename}', ${paper.clusterId}, event)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </a>` : ''}
+                        </div>
+                    </div>
+                    <div class="paper__details">
+                        <div class="paper__details-inner">
+                            <p class="paper__relevance">${paper.relevance}</p>
+                            <div class="paper__aims">
+                                ${paper.aims.map(aim => renderAimTag(aim)).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCluster(cluster, clusterPapers) {
+            const isOpen = openClusters.has(cluster.id);
+            const isSummaryOpen = openSummaries.has(cluster.id);
+            const visiblePapers = clusterPapers.filter(paper => matchesSearch(paper));
+
+            if (visiblePapers.length === 0 && searchQuery) {
+                return '';
+            }
+
+            return `
+                <section class="cluster ${isOpen ? 'cluster--open' : ''}"
+                         data-cluster-id="${cluster.id}"
+                         style="--cluster-color: ${cluster.color};">
+                    <div class="cluster__header">
+                        <div class="cluster__color-bar"></div>
+                        <svg class="cluster__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        <div class="cluster__info">
+                            <h2 class="cluster__title">${cluster.id !== 10 ? `<span class="cluster__number">${cluster.id}.</span> ` : ''}${cluster.name}</h2>
+                            <p class="cluster__description">${cluster.description}</p>
+                        </div>
+                        <span class="cluster__count">${visiblePapers.length} papers</span>
+                    </div>
+                    <div class="cluster__content">
+                        <div class="cluster__summary ${isSummaryOpen ? 'cluster__summary--open' : ''}" data-cluster-id="${cluster.id}">
+                            <div class="cluster__summary-toggle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                                Cluster Overview
+                            </div>
+                            <div class="cluster__summary-text">${cluster.summary}</div>
+                        </div>
+                        ${visiblePapers.map((paper, index) => renderPaper(paper, index)).join('')}
+                    </div>
+                </section>
+            `;
+        }
+
+        function matchesSearch(paper) {
+            if (!searchQuery) return true;
+            const query = searchQuery.toLowerCase();
+            const searchText = `${paper.citation} ${paper.relevance} ${paper.aims.join(' ')}`.toLowerCase();
+            return searchText.includes(query);
+        }
+
+        function render() {
+            // Filter clusters based on active filters
+            let clustersToShow = clusters;
+            if (activeFilters.size > 0) {
+                clustersToShow = clusters.filter(c => activeFilters.has(c.id));
+            }
+
+            // Render clusters
+            const html = clustersToShow.map(cluster => {
+                const clusterPapers = papers.filter(p => p.clusterId === cluster.id);
+                return renderCluster(cluster, clusterPapers);
+            }).filter(html => html).join('');
+
+            clustersContainer.innerHTML = html;
+
+            // Count visible papers (exclude Additional References from count)
+            const visiblePapers = papers.filter(paper => {
+                if (activeFilters.size > 0 && !activeFilters.has(paper.clusterId)) return false;
+                return matchesSearch(paper);
+            });
+            const visibleAcademicPapers = visiblePapers.filter(p => p.clusterId !== 10);
+
+            totalPapersEl.textContent = visibleAcademicPapers.length;
+            noResults.style.display = visiblePapers.length === 0 ? 'block' : 'none';
+
+            // Update filter chips
+            clusterFiltersContainer.querySelectorAll('.cluster-chip').forEach(chip => {
+                const clusterId = parseInt(chip.dataset.clusterId);
+                chip.classList.toggle('cluster-chip--active', activeFilters.has(clusterId));
+            });
+
+            // Add event listeners
+            addEventListeners();
+        }
+
+        function addEventListeners() {
+            // Cluster headers
+            document.querySelectorAll('.cluster__header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const cluster = header.closest('.cluster');
+                    const clusterId = parseInt(cluster.dataset.clusterId);
+
+                    if (openClusters.has(clusterId)) {
+                        openClusters.delete(clusterId);
+                        cluster.classList.remove('cluster--open');
+                    } else {
+                        openClusters.add(clusterId);
+                        cluster.classList.add('cluster--open');
+                    }
+                });
+            });
+
+            // Cluster summary toggles
+            document.querySelectorAll('.cluster__summary-toggle').forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const summary = toggle.closest('.cluster__summary');
+                    const clusterId = parseInt(summary.dataset.clusterId);
+
+                    if (openSummaries.has(clusterId)) {
+                        openSummaries.delete(clusterId);
+                        summary.classList.remove('cluster__summary--open');
+                    } else {
+                        openSummaries.add(clusterId);
+                        summary.classList.add('cluster__summary--open');
+                    }
+                });
+            });
+
+            // Paper headers (whole row clickable)
+            document.querySelectorAll('.paper__header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    // Don't toggle if clicking on action buttons
+                    if (e.target.closest('.paper__quick-actions')) return;
+
+                    e.stopPropagation();
+                    const paper = header.closest('.paper');
+                    const paperId = parseInt(paper.dataset.paperId);
+
+                    if (openPapers.has(paperId)) {
+                        openPapers.delete(paperId);
+                        paper.classList.remove('paper--open');
+                    } else {
+                        openPapers.add(paperId);
+                        paper.classList.add('paper--open');
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // Event Handlers
+        // ============================================
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            render();
+        });
+
+        expandAllBtn.addEventListener('click', () => {
+            clusters.forEach(c => {
+                openClusters.add(c.id);
+                openSummaries.add(c.id);
+            });
+            papers.forEach(p => openPapers.add(p.id));
+            render();
+        });
+
+        collapseAllBtn.addEventListener('click', () => {
+            openClusters.clear();
+            openPapers.clear();
+            openSummaries.clear();
+            render();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchQuery = '';
+                render();
+            }
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+
+        // ============================================
+        // Download Helper
+        // ============================================
+        function downloadPdf(filename, clusterId, event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const folderName = clusterId === 10 ? 'additional' : 'cluster' + clusterId;
+            const link = document.createElement('a');
+            link.href = 'pdfs/' + folderName + '/' + filename;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ============================================
+        // Initialize
+        // ============================================
+        renderClusterFilters();
+        render();
+    </script>
+</body>
+</html>
