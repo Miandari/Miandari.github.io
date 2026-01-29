@@ -124,9 +124,18 @@
             font-style: italic;
         }
 
-        .header__proposal-link {
-            display: inline-block;
+        .header__links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
             margin-bottom: var(--space-md);
+        }
+
+        .header__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             font-family: var(--font-body);
             font-size: 0.875rem;
             color: var(--accent-gold);
@@ -135,8 +144,17 @@
             transition: color 0.2s ease;
         }
 
-        .header__proposal-link:hover {
+        .header__link:hover {
             color: var(--accent-teal);
+        }
+
+        .header__link svg {
+            opacity: 0.7;
+        }
+
+        .header__link-divider {
+            color: var(--text-muted);
+            opacity: 0.4;
         }
 
         .header__stats {
@@ -847,7 +865,17 @@
     <header class="header">
         <h1 class="header__title">Mostafa's Reading List Defence</h1>
         <p class="header__subtitle">Social media dynamics in emotion, information content and norm-responsiveness: Universal truths or platform-specific?</p>
-        <a href="https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.t4jmiihwa2u2" class="header__proposal-link" target="_blank" rel="noopener">View The Proposal &rarr;</a>
+        <div class="header__links">
+            <a href="https://docs.google.com/document/d/1Nfg9wsfLL5iY6Fqc_70GNKZ-EhlweLhMvXhiPfpdNKw/edit?tab=t.0#heading=h.t4jmiihwa2u2" class="header__link" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                View The Proposal
+            </a>
+            <span class="header__link-divider">&middot;</span>
+            <a href="https://drive.google.com/drive/folders/1-k31Y9JwjVRCXX9gkOsJZijgTZH_ArL1?usp=sharing" class="header__link" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                All Papers (Google Drive)
+            </a>
+        </div>
         <div class="header__stats">
             <div class="stat">
                 <span class="stat__value" id="total-papers">91</span>
